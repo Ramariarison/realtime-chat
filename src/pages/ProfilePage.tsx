@@ -1,4 +1,5 @@
 import LeftSide from "../components/profile/SideProfile";
+import ProfileContent from "../components/profile/ProfileContent";
 
 export default function Profilepage() {
     return (
@@ -6,7 +7,7 @@ export default function Profilepage() {
 
             <LeftSide />
 
-            <div className="flex-1 bg-gray-200"></div>
+            <ProfileContent />
 
         </div>
     )

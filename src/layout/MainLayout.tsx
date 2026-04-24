@@ -7,7 +7,7 @@ export default function MainLayout() {
       
       <Sidebar />
 
-      <div className="flex-1 bg-gray-100">
+      <div className="flex-1">
         <Outlet />
       </div>
 
