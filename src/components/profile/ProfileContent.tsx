@@ -71,6 +71,14 @@ export default function ProfileContent() {
                         </div>
                     </div>
 
+                    { /* Button */ }
+
+                    <div className="mt-2 sm:col-span-2">
+                        <button className="w-full rounded-sm px-3 py-2 text-white text-sm/6 font-semibold bg-gradient-to-r from-blue-500 to-purple-500 shadow-md">
+                            Apply
+                        </button>
+                    </div>
+
                 </div>
             </form>
         </div>
