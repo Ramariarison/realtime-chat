@@ -13,11 +13,11 @@ export default function Sidebar() {
     <div className="w-20 md:w-72 h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white flex flex-col border-r border-white/10 shadow-2xl transition-all duration-300 overflow-hidden">
       {/* Header + Logo */}
       <div className="p-6 flex items-center gap-3 border-b border-white/10">
-        <div className="w-9 h-9 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
+        <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30">
           <Logo />
         </div>
         <div className="hidden md:block">
-          <div className="font-semibold text-xl tracking-tight">VintsiChat</div>
+          <div className="font-semibold text-xl tracking-tight">Pochita</div>
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export default function Sidebar() {
       <div className="mt-auto p-4 border-t border-white/10">
         <div className="flex items-center gap-3 px-2 py-2 rounded-2xl hover:bg-white/10 transition-colors">
           <img
-            src="https://i.pravatar.cc/100"
+            src="/images/Rudd.jpg"
             alt="Avatar"
             className="w-9 h-9 rounded-2xl ring-2 ring-white/30 object-cover"
           />

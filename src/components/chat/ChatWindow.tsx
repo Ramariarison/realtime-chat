@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { Paperclip, Send } from "lucide-react";
 
 interface ChatWindowProps {
   conversationId: number;
 }
 
 export default function ChatWindow({ conversationId }: ChatWindowProps) {
-  const [message, setMessage] = useState("");
 
   // Simulation des données de la conversation (à remplacer plus tard par une vraie requête API)
   // On utilise conversationId pour simuler le chargement de la bonne conversation
   const currentConversation = {
     id: conversationId,
-    name: conversationId === 1 ? "Alice Dupont" : 
-          conversationId === 2 ? "Bob Martin" :
+    name: conversationId === 1 ? "Nomena Fitiavana" : 
+          conversationId === 2 ? "Alice Marielle" :
           conversationId === 3 ? "John Rakoto" : "Sophie Razafy",
     avatar: `https://i.pravatar.cc/48?u=${conversationId}`,
     isOnline: conversationId === 1 || conversationId === 3,
@@ -25,26 +24,17 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
     { id: 4, text: "Oui, je suis dessus en ce moment", isSent: true, time: "14:29" },
   ];
 
-  const handleSend = () => {
-    if (!message.trim()) return;
-    
-    console.log(`Message envoyé dans la conversation ${conversationId} :`, message);
-    // TODO: Plus tard → envoyer le message via API avec conversationId
-    
-    setMessage("");
-  };
-
   return (
     <div className="flex-1 flex flex-col h-full">
       {/* Header du chat window */}
-      <div className="p-4 bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 flex items-center gap-3">
+      <div className="p-4 bg-white flex items-center gap-3">
         <img
           src={currentConversation.avatar}
           alt={currentConversation.name}
-          className="w-10 h-10 rounded-2xl object-cover"
+          className="w-10 h-10 rounded-full object-cover"
         />
         <div>
-          <div className="font-semibold text-white">{currentConversation.name}</div>
+          <div className="font-semibold text-sm">{currentConversation.name}</div>
           <div className="flex items-center gap-1 text-xs text-green-500">
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
             {currentConversation.isOnline ? "en ligne" : "hors ligne"}
@@ -53,7 +43,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
       </div>
 
       {/* Zone pour les messages */}
-      <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-gray-200">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-200">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -80,23 +70,31 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
       </div>
 
       {/* Zone de saisie */}
-      <div className="p-4 bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800">
-        <div className="flex gap-2">
+      <div className="p-4 bg-gray-200">
+        <div className="flex items-center bg-white rounded-md px-3 py-2 shadow-md">
+
+          {/* Input */}
           <input
             type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Écrire un message..."
-            className="flex-1 px-5 py-3 bg-gray-100 rounded-full outline-none focus:ring-2 focus:ring-blue-200 transition-all"
+            placeholder="Write a message..."
+            className="flex-1 bg-transparent text-gray-800 outline-none pr-10"
           />
-          <button
-            onClick={handleSend}
-            disabled={!message.trim()}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white px-6 py-3 rounded-full font-medium transition-all active:scale-95"
-          >
-            Envoyer
-          </button>
+
+          {/* Icons container */}
+          <div className="flex items-center gap-3">
+
+            {/* Attach */}
+            <button className="text-gray-400 hover:text-gray-800 ">
+              <Paperclip size={20} />
+            </button>
+
+            {/* Send */}
+            <button className="bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 hover:bg-blue-600 px-3 py-2 rounded-md flex items-center gap-2">
+              <span className="text-white font-semibold">Send</span>
+              <Send size={18} className="text-white" />
+            </button>
+
+          </div>
         </div>
       </div>
     </div>

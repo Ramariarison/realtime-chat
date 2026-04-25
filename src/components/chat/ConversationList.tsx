@@ -17,7 +17,7 @@ export default function ConversationList({
   const conversations: Conversation[] = [
     {
       id: 1,
-      name: "Alice Dupont",
+      name: "Nomena Fitiavana",
       message: "Salut ! Tu as vu le dernier message ?",
       time: "14:32",
       unreadCount: 3,
@@ -25,7 +25,7 @@ export default function ConversationList({
     },
     {
       id: 2,
-      name: "Bob Martin",
+      name: "Alice Marielle",
       message: "Ça va ? On se voit demain ?",
       time: "13:15",
       isOnline: false,

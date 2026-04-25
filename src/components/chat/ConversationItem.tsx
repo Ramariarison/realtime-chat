@@ -25,7 +25,7 @@ export default function ConversationItem({
         <img
           src={conversation.avatar || `https://i.pravatar.cc/48?u=${conversation.id}`}
           alt={conversation.name}
-          className="w-12 h-12 rounded-2xl object-cover ring-1 ring-gray-100"
+          className="w-12 h-12 rounded-full object-cover ring-1 ring-gray-100"
         />
         {conversation.isOnline && (
           <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
@@ -35,7 +35,7 @@ export default function ConversationItem({
       {/* Contenu */}
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between">
-          <div className="font-semibold text-gray-900 truncate">
+          <div className="font-semibold text-sm/6 text-gray-900 truncate">
             {conversation.name}
           </div>
           <div className="text-xs text-gray-500 whitespace-nowrap ml-2">
