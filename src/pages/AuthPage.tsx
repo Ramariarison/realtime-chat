@@ -25,7 +25,7 @@ export default function AuthLayout() {
           className="w-1/2 h-full hidden md:block"
         >
           <img
-            src="/images/Image.jpg"
+            src="/images/3d.webp"
             className="w-full h-full object-cover"
           />
         </motion.div>

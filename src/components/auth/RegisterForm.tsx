@@ -13,12 +13,12 @@ export default function RegisterForm({ switchToLogin }: Props) {
         <div className="flex flex-col items-center gap-2">
             <Logo />
 
-            <h2 className="text-xl text-white font-semibold text-center">
-                Sign up to Vintsy
+            <h2 className="text-xl text-gray-900 font-semibold text-center">
+                Sign up to Pochita
             </h2>
 
             <span className="text-gray-400 text-sm text-center">
-                Connect, chat, and stay in sync with your friends in real time
+                Connect and chat instantly with your friends
             </span>
         </div>
 
@@ -29,7 +29,7 @@ export default function RegisterForm({ switchToLogin }: Props) {
 
       <Button>Register</Button>
 
-      <p className="text-sm text-gray-400">
+      <p className="text-sm text-gray-900">
         Already have an account ?{" "}
         <span
           onClick={switchToLogin}

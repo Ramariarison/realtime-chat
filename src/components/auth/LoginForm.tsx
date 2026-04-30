@@ -12,7 +12,7 @@ export default function LoginForm({ switchToRegister }: Props) {
         <div className="flex flex-col items-center gap-2">
             <Logo />
 
-            <h2 className="text-xl text-white font-semibold text-center">
+            <h2 className="text-xl text-gray-900 font-semibold text-center">
                 Welcome back
             </h2>
 
@@ -26,7 +26,7 @@ export default function LoginForm({ switchToRegister }: Props) {
 
       <div className="flex items-center justify-between text-sm">
         
-        <label className="flex items-center gap-2 text-gray-400 cursor-pointer">
+        <label className="flex items-center gap-2 text-gray-900 cursor-pointer">
           <input
             type="checkbox"
             className="bg-gray-800 accent-blue-600"
@@ -42,7 +42,7 @@ export default function LoginForm({ switchToRegister }: Props) {
 
       <Button>Login</Button>
 
-      <p className="text-sm text-gray-400">
+      <p className="text-sm text-gray-900">
         Don’t have an account ?{" "}
         <span
           onClick={switchToRegister}
