@@ -13,7 +13,7 @@ export default function ChatPage() {
         onSelect={setSelectedId} 
       />
 
-      <div className="flex-1 flex flex-col bg-gray-50 min-w-0">
+      <div className="flex-1 flex flex-col bg-transparent min-w-0">
         {selectedId ? (
           <ChatWindow conversationId={selectedId} />
         ) : (

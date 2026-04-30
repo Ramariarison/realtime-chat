@@ -42,58 +42,70 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
         </div>
       </div>
 
-      {/* Zone pour les messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-100">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${msg.isSent ? "justify-end" : "justify-start"}`}
-          >
+      <div 
+        className="flex-1 flex flex-col overflow-y-auto bg-fixed"
+        style={{
+          backgroundImage: "url('/images/Pochita.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed"
+        }}
+      >
+        {/* Messages */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-4">
+          {messages.map((msg) => (
             <div
-              className={`max-w-[70%] px-4 py-3 rounded-3xl text-sm shadow-sm ${
-                msg.isSent
-                  ? "bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white rounded-br-none"
-                  : "bg-white text-gray-800 rounded-bl-none"
-              }`}
+              key={msg.id}
+              className={`flex ${msg.isSent ? "justify-end" : "justify-start"}`}
             >
-              {msg.text}
               <div
-                className={`text-[10px] mt-1 opacity-70 ${
-                  msg.isSent ? "text-blue-100" : "text-gray-500"
+                className={`max-w-[70%] px-4 py-3 rounded-3xl text-sm shadow-sm ${
+                  msg.isSent
+                    ? "bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white rounded-br-none"
+                    : "bg-white text-gray-800 rounded-bl-none"
                 }`}
               >
-                {msg.time}
+                {msg.text}
+                <div
+                  className={`text-[10px] mt-1 opacity-70 ${
+                    msg.isSent ? "text-blue-100" : "text-gray-500"
+                  }`}
+                >
+                  {msg.time}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Zone de saisie */}
-      <div className="p-4 bg-white">
-        <div className="flex items-center bg-white rounded-md px-3 py-2 shadow-sm">
-
-          {/* Input */}
+        {/* Zone de saisie */}
+        <div className="flex items-center rounded-r-full px-3 py-1.25 shadow-sm m-4 bg-black/20 backdrop-blur-sm">
           <input
             type="text"
-            placeholder="Write a message..."
-            className="flex-1 bg-transparent text-gray-800 outline-none pr-10"
+            placeholder="Write a message here"
+            className="flex-1 bg-transparent text-white placeholder-white/70 outline-none pr-10"
           />
 
-          {/* Icons container */}
           <div className="flex items-center gap-3">
-
-            {/* Attach */}
-            <button className="text-gray-400 hover:text-gray-800 ">
+            <button className="text-white/70 hover:text-white">
               <Paperclip size={20} />
             </button>
 
-            {/* Send */}
-            <button className="bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 hover:bg-blue-600 px-3 py-2 rounded-md flex items-center gap-2">
-              <span className="text-white font-semibold">Send</span>
-              <Send size={18} className="text-white" />
+            <button 
+              className="group flex items-center justify-center w-11 h-11 
+                        bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 
+                        hover:from-violet-500 hover:via-purple-500 hover:to-indigo-500
+                        active:scale-95 transition-all duration-200 
+                        rounded-full shadow-lg shadow-purple-500/30
+                        hover:shadow-xl hover:shadow-purple-500/40
+                        focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 
+                        focus:ring-offset-zinc-950"
+            >
+              <Send 
+                size={20} 
+                className="text-white transition-transform group-active:rotate-45" 
+              />
             </button>
-
           </div>
         </div>
       </div>
