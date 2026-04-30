@@ -2,9 +2,9 @@ import { ChevronRight } from "lucide-react";
 
 export default function LeftSide() {
   return (
-    <div className="w-80 md:w-96 bg-gray-200 flex flex-col h-full items-center justify-center text-center px-6">
+    <div className="p-6 w-80 md:w-96 bg-gray-100 flex flex-col h-full items-center text-center">
       
-      <div className="w-32 h-32 mb-6">
+      <div className="w-42 h-42 mb-6">
         <img
           className="h-full w-full rounded-full object-cover"
           src="/images/emily.jpg"

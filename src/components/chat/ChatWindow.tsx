@@ -31,7 +31,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
         <img
           src={currentConversation.avatar}
           alt={currentConversation.name}
-          className="w-10 h-10 rounded-full object-cover"
+          className="w-12 h-12 rounded-full object-cover"
         />
         <div>
           <div className="font-semibold text-sm">{currentConversation.name}</div>
@@ -43,7 +43,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
       </div>
 
       {/* Zone pour les messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-200">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-100">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -52,7 +52,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
             <div
               className={`max-w-[70%] px-4 py-3 rounded-3xl text-sm shadow-sm ${
                 msg.isSent
-                  ? "bg-blue-600 text-white rounded-br-none"
+                  ? "bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white rounded-br-none"
                   : "bg-white text-gray-800 rounded-bl-none"
               }`}
             >
@@ -70,8 +70,8 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
       </div>
 
       {/* Zone de saisie */}
-      <div className="p-4 bg-gray-200">
-        <div className="flex items-center bg-white rounded-md px-3 py-2 shadow-md">
+      <div className="p-4 bg-white">
+        <div className="flex items-center bg-white rounded-md px-3 py-2 shadow-sm">
 
           {/* Input */}
           <input

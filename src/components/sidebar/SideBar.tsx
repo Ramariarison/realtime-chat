@@ -54,7 +54,7 @@ export default function Sidebar() {
           <img
             src="/images/Rudd.jpg"
             alt="Avatar"
-            className="w-9 h-9 rounded-2xl ring-2 ring-white/30 object-cover"
+            className="w-12 h-12 rounded-full ring-2 ring-white/30 object-cover"
           />
           <div className="hidden md:block flex-1 min-w-0">
             <div className="font-medium text-sm truncate">Ramariarison</div>
