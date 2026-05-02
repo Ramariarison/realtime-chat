@@ -1,12 +1,11 @@
-import { MessageCircle, Settings, User, LogOut } from "lucide-react";
+import { Users, LayoutDashboard, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import Logo from "../ui/Logo";
 
 export default function Sidebar() {
   const menu = [
-    { name: "Chat", icon: MessageCircle, path: "/user/chat" },
-    { name: "Profile", icon: User, path: "/user/profile" },
-    { name: "Settings", icon: Settings, path: "/user/settings" },
+    { name: "Users List", icon: Users, path: "/admin/users" },
+    { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
   ];
 
   return (
@@ -57,8 +56,8 @@ export default function Sidebar() {
             className="w-12 h-12 rounded-full ring-2 ring-white/30 object-cover"
           />
           <div className="hidden md:block flex-1 min-w-0">
-            <div className="font-medium text-sm truncate">Ramariarison</div>
-            <div className="text-xs text-white/60">andry@gmail.com</div>
+            <div className="font-medium text-sm truncate">Admin</div>
+            <div className="text-xs text-white/60">admin@gmail.com</div>
           </div>
           <button
             className="hidden md:block p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
