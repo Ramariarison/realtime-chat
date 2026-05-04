@@ -1,18 +1,18 @@
-import { Users, UserCheck, UserLock, Eye, Edit, Trash, Search, Filter, UserPlus, CheckCircle } from "lucide-react"
+import { Users, UserCheck, UserLock, Edit, Trash, Search, Filter, UserPlus, CheckCircle, Inspect } from "lucide-react"
 
 export default function UserList() {
 
     const Accounts = [
 
-        { id: 1, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Validated" },
+        { id: 1, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Accepted" },
 
         { id: 2, name: "Fetra Faneva", email: "faneva@gmail.com", status: "Pending" },
 
         { id: 3, name: "Cino Nomena", email: "cino@gmail.com", status: "Pending" },
 
-        { id: 4, name: "Fiderana Antsa", email: "fiderana@gmail.com", status: "Validated" },
+        { id: 4, name: "Fiderana Antsa", email: "fiderana@gmail.com", status: "Accepted" },
 
-        { id: 5, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Validated" },
+        { id: 5, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Accepted" },
 
         { id: 6, name: "Fetra Faneva", email: "faneva@gmail.com", status: "Pending" },
 
@@ -23,7 +23,11 @@ export default function UserList() {
 
             {/* header title */}
 
-            <h2 className="ml-4 mt-4 font-semibold text-xl">User Statistics</h2>
+            <h2 className="ml-8 mt-4 font-semibold text-xl">User Statistics</h2>
+
+            <p className="ml-8 mt-2 text-sm text-gray-500">
+                Real-time overview of user engagement and growth
+            </p>
 
             {/* cards stats */}
 
@@ -103,59 +107,65 @@ export default function UserList() {
 
             {/* users list */}
 
-            <div className="pt-4 px-4 flex items-center justify-between w-full">
+            <div className="pt-4 px-8 flex items-end justify-between w-full">
+                {/* Left side - Title */}
+                <div>
+                    <span className="text-gray-700 font-medium text-xl">
+                        Accounts
+                    </span>
+                    <p className="mt-2 text-sm text-gray-500">
+                        Showing all registered users in the system
+                    </p>
+                </div>
 
-                {/* Add User */}
-                <button
-                    className="flex items-center gap-2 px-4 py-2 rounded-md 
-                            bg-blue-300 text-white hover:bg-blue-500 transition"
-                >
-                    <UserPlus className="w-5 h-5" />
-                    <span className="hidden sm:inline">Ajouter</span>
-                </button>
-
-                {/* Search + Filter */}
-            
-                <div className="flex items-center gap-3 w-full max-w-xl">
-                    
+                {/* Right side - Search + Filter + Add */}
+                <div className="flex gap-2">
                     {/* Search */}
-                    <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                         
                         <input
                             type="text"
                             placeholder="Rechercher un utilisateur..."
-                            className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 
-                                    focus:outline-none focus:ring-1 focus:ring-blue-500 
+                            className="w-64 pl-9 pr-4 py-1.5 text-sm rounded-md border border-gray-300 
+                                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
                                     transition"
                         />
                     </div>
 
-                    {/* Filter */}
+                    {/* Filter Button */}
                     <button
-                        className="text-white flex items-center gap-2 px-4 py-2 rounded-md 
-                        bg-blue-300 hover:bg-blue-500 transition"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm
+                                bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
                     >
-                        <Filter className="w-5 h-5" />
-                        <span className="hidden sm:inline">Filtrer</span>
+                        <Filter className="w-4 h-4" />
+                        <span className="hidden sm:inline">Filter</span>
+                    </button>
+
+                    {/* Add User Button */}
+                    <button
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm
+                                bg-blue-600 text-white hover:bg-blue-700 transition"
+                    >
+                        <UserPlus className="w-4 h-4" />
+                        <span className="hidden sm:inline">Add</span>
                     </button>
                 </div>
-            
             </div>
 
-            <div className="m-4">
+            <div className="mt-4 mx-4">
 
                 <table className="w-full">
 
                     <thead>
 
-                        <tr className="text-left border-b text-white bg-blue-300">
+                        <tr className="text-left border-b border-gray-300 text-gray-600 text-sm">
 
-                            <th className="text-center p-4">Identifier</th>
+                            <th className="p-4">Id</th>
 
                             <th className="p-4">Name</th>
 
-                            <th className="p-4">Email</th>
+                            <th className="p-4">Email address</th>
 
                             <th className="text-center p-4">Status</th>
 
@@ -171,7 +181,7 @@ export default function UserList() {
 
                             <tr key={Account.id} className="border-b border-gray-200 text-gray-600 text-sm">
 
-                                <td className="font-semibold text-center p-4">{Account.id}</td>
+                                <td className="font-semibold p-4">{Account.id}</td>
 
                                 <td className="p-4">{Account.name}</td>
 
@@ -179,36 +189,36 @@ export default function UserList() {
 
                                 <td className="text-center align-middle">
                                     <span
-                                        className={`font-semibold inline-block px-2 py-1 rounded-md text-sm
-                                        ${Account.status === "Validated"
-                                        ? "text-green-500"
-                                        : "text-yellow-500"}`}
+                                        className={`font-semibold inline-block px-2 py-1 rounded-md text-xs
+                                        ${Account.status === "Accepted"
+                                        ? "text-emerald-600 border-2 border-emerald-100 bg-green-50 rounded-md"
+                                        : "text-amber-600 border-2 border-amber-100 bg-amber-50 rounded-md"}`}
                                     >
                                         {Account.status}
                                     </span>
                                 </td>
 
                                 <td className="p-2">
-                                    <div className="flex gap-1 justify-center">
+                                    <div className="flex gap-3 justify-center items-center">
 
-                                        <div className="p-3 bg-blue-400 rounded-full cursor-pointer">
-                                            <Eye size={14} strokeWidth={3} className="text-white" />
+                                        <div>
+                                            <Inspect size={16} strokeWidth={3} className="text-blue-400 cursor-pointer" />
                                         </div>
 
-                                        {Account.status === "Validated" && (
-                                            <div className="p-3 bg-emerald-400 rounded-full cursor-pointer">
-                                                <Edit size={14} strokeWidth={3} className="text-white" />
+                                        {Account.status === "Accepted" && (
+                                            <div>
+                                                <Edit size={16} strokeWidth={3} className="text-emerald-400 cursor-pointer" />
                                             </div>
                                         )}
 
                                         {Account.status === "Pending" && (
-                                            <div className="p-3 bg-emerald-400 rounded-full cursor-pointer">
-                                                <CheckCircle size={14} strokeWidth={3} className="text-white" />
+                                            <div>
+                                                <CheckCircle size={16} strokeWidth={3} className="text-emerald-400 cursor-pointer" />
                                             </div>
                                         )}
 
-                                        <div className="p-3 bg-red-400 rounded-full cursor-pointer">
-                                            <Trash size={14} strokeWidth={3} className="text-white" />
+                                        <div>
+                                            <Trash size={16} strokeWidth={3} className="text-red-400 cursor-pointer" />
                                         </div>
 
                                     </div>
