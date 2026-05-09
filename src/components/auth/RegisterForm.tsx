@@ -1,6 +1,7 @@
 import Button from "../ui/Button"
 import { useState, useEffect } from "react"
 import Input from "../ui/Input";
+import { registerUser } from "../../services/authService";
 
 type Props = {
   switchToLogin: () => void;
@@ -81,6 +82,24 @@ export default function RegisterForm({ switchToLogin }: Props) {
     // Check du file
     if(avatarFile){
       data.append('avatar', avatarFile);
+    }
+
+    try {
+
+      const response = await registerUser(data);
+
+      localStorage.setItem("token", response.token);
+
+      console.log(response);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+
+      setError(err.message);
+
+    } finally {
+
+      setLoading(false);
     }
   }
 
