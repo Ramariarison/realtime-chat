@@ -4,18 +4,23 @@ type FetchOptions = {
   method?: string;
   body?: BodyInit | null;
   token?: string;
+  isFormData?: boolean;
 };
 
 export async function apiFetch(
   endpoint: string,
   options: FetchOptions = {}
 ) {
-
   const headers: HeadersInit = {};
 
-  // Ajouter token si existe
+  headers["Accept"] = "application/json";
+  
   if (options.token) {
     headers["Authorization"] = `Bearer ${options.token}`;
+  }
+
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -24,11 +29,5 @@ export async function apiFetch(
     body: options.body || null,
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Erreur serveur");
-  }
-
-  return data;
+  return await response.json();
 }
