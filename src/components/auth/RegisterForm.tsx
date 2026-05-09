@@ -87,7 +87,7 @@ export default function RegisterForm({ switchToLogin }: Props) {
   return (
     <>
       {/* Toast notification d'erreur */}
-      <div className={`fixed top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
+      <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
         showError ? 'translate-y-4 opacity-100' : '-translate-y-full opacity-0'
       }`}>
         <div className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
