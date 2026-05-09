@@ -9,7 +9,7 @@ interface AuthCardProps {
 
 export default function AuthCard({ isLogin, setIsLogin }: AuthCardProps) {
   return (
-    <div className="flex items-center justify-center w-full h-full bg-white px-30">
+    <div className="flex items-center justify-center w-full h-full bg-white px-30 relative">
       <AnimatePresence mode="wait">
         <motion.div
           key={isLogin ? "login" : "register"}
