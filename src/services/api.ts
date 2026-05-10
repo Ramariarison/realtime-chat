@@ -4,18 +4,23 @@ type FetchOptions = {
   method?: string;
   body?: BodyInit | null;
   token?: string;
+  isFormData?: boolean;
 };
 
 export async function apiFetch(
   endpoint: string,
   options: FetchOptions = {}
 ) {
-
   const headers: HeadersInit = {};
 
-  // Ajouter token si existe
+  headers["Accept"] = "application/json";
+  
   if (options.token) {
     headers["Authorization"] = `Bearer ${options.token}`;
+  }
+
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -24,11 +29,18 @@ export async function apiFetch(
     body: options.body || null,
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Erreur serveur");
+  // Erreurs de validation (422)
+  if (response.status === 422) {
+    const errorData = await response.json();
+    // Formatage des erreurs de validation venant de Laravel
+    const errorMessages = Object.values(errorData.errors || {}).flat().join(', ');
+    throw new Error(errorMessages || errorData.message || "Erreur de validation");
   }
 
-  return data;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Erreur ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
 }
