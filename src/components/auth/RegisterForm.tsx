@@ -2,6 +2,7 @@ import Button from "../ui/Button"
 import { useState, useEffect } from "react"
 import Input from "../ui/Input";
 import { registerUser } from "../../services/authService";
+import { Check, CircleAlert, X } from "lucide-react";
 
 type Props = {
   switchToLogin: () => void;
@@ -12,6 +13,8 @@ export default function RegisterForm({ switchToLogin }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showError, setShowError] = useState(false);
+  const [message, setMessage] = useState('');
+  const [showMessage, setShowMessage] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
@@ -33,6 +36,17 @@ export default function RegisterForm({ switchToLogin }: Props) {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (message) {
+      setShowMessage(true);
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+        setTimeout(() => setMessage(''), 300);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -88,7 +102,22 @@ export default function RegisterForm({ switchToLogin }: Props) {
 
       const response = await registerUser(data);
 
-      localStorage.setItem("token", response.token);
+      // localStorage.setItem("token", response.token);
+
+      // Pour vider le formulaire
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      });
+
+      setAvatarFile(null);
+      setAvatarPreview(null);
+
+      setMessage('Account created successfully waiting for the administrator to be validated !');
+
+      setShowMessage(true);
 
       console.log(response);
 
@@ -110,17 +139,35 @@ export default function RegisterForm({ switchToLogin }: Props) {
         showError ? 'translate-y-4 opacity-100' : '-translate-y-full opacity-0'
       }`}>
         <div className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          
+          <CircleAlert className="w-5 h-5 flex-shrink-0" />
+
           <span className="text-sm font-medium">{error}</span>
-          <button 
+
+          <button
             onClick={() => setShowError(false)}
             className="ml-auto hover:bg-red-600 rounded-full p-1 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Toast notification de succés */}
+      <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
+        showMessage ? 'translate-y-4 opacity-100' : '-translate-y-full opacity-0'
+      }`}>
+        <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
+          
+          <Check className="w-5 h-5 flex-shrink-0" />
+
+          <span className="text-sm font-medium">{message}</span>
+
+          <button
+            onClick={() => setShowMessage(false)}
+            className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
+          >
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>
