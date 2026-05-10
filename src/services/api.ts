@@ -29,5 +29,18 @@ export async function apiFetch(
     body: options.body || null,
   });
 
+  // Erreurs de validation (422)
+  if (response.status === 422) {
+    const errorData = await response.json();
+    // Formatage des erreurs de validation venant de Laravel
+    const errorMessages = Object.values(errorData.errors || {}).flat().join(', ');
+    throw new Error(errorMessages || errorData.message || "Erreur de validation");
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Erreur ${response.status}: ${response.statusText}`);
+  }
+
   return await response.json();
 }

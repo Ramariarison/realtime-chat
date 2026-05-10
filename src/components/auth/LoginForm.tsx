@@ -43,7 +43,7 @@ export default function LoginForm({ switchToRegister }: Props) {
     setError('');
 
     if ( !formData.email || !formData.password ){
-      setError('Veuillez remplir les champs !');
+      setError('Please fill in the fields !');
       setLoading(false);
       return;
     }

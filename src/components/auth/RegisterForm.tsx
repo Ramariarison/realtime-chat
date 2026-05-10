@@ -60,14 +60,14 @@ export default function RegisterForm({ switchToLogin }: Props) {
 
     // Validation simple
     if ( !formData.name || !formData.email || !formData.password || !formData.password_confirmation ){
-      setError('Veuillez remplir les champs !');
+      setError('Please fill in the fields !');
       setLoading(false);
       return;
     }
 
     // Validation mot de passe
     if ( formData.password !== formData.password_confirmation ){
-      setError('Les mots de passes ne correspondent pas !');
+      setError('Passwords do not match !');
       setLoading(false);
       return;
     }
