@@ -2,6 +2,8 @@ import Input from "../ui/Input"
 import Button from "../ui/Button"
 import Logo from "../ui/Logo"
 import { useEffect, useState } from "react"
+import { loginUser } from "../../services/authService"
+import { useNavigate } from "react-router-dom"
 
 type Props = {
   switchToRegister: () => void
@@ -12,6 +14,8 @@ export default function LoginForm({ switchToRegister }: Props) {
   const [error, setError] = useState('')
   const [showError, setShowError] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if(error){
@@ -51,6 +55,39 @@ export default function LoginForm({ switchToRegister }: Props) {
     const data = new FormData();
     data.append('email', formData.email);
     data.append('password', formData.password);
+
+    try {
+      
+      const response = await loginUser(data);
+
+      localStorage.setItem("token", response.access_token);
+
+      localStorage.setItem("user_role", response.user.role);
+
+      const role = response.user.role;
+
+      setFormData({
+        email: '',
+        password: ''
+      });
+
+      if (role === 'admin'){
+        navigate('/admin/users')
+      }
+      else {
+        navigate('/user/chat')
+      }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+
+      setError(err.message);
+      
+    } finally {
+
+      setLoading(false);
+
+    }
   }
 
   return (
