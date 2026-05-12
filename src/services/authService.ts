@@ -15,3 +15,11 @@ export async function loginUser(formData: FormData) {
     body: formData,
   });
 }
+
+export async function logoutUser(token: string) {
+  
+  return await apiFetch("/logout", {
+    method: "POST",
+    token,
+  });
+}
