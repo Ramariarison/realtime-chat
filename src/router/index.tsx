@@ -9,13 +9,17 @@ import ChatPage from "../pages/ChatPage"
 import Profilepage from "../pages/ProfilePage"
 import UserList from "../components/admin/UserList"
 import ProtectedRoute from "../components/ProtectedRoute"
+import GuestRoute from "../components/GuestRoute"
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* Zone Publique */}
-        <Route path="/" element={<AuthPage />} />
+        <Route element={<GuestRoute />}>
+          <Route path="/" element={<AuthPage />} />
+        </Route>
 
         {/* Utilisateur Normal */}
         <Route element={<ProtectedRoute allowedRoles={['normal']} />}>
