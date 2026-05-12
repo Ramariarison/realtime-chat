@@ -1,8 +1,38 @@
 import { Users, LayoutDashboard, LogOut } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../ui/Logo";
+import { logoutUser } from "../../services/authService";
 
 export default function Sidebar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+
+      // récupérer le token
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/");
+        return;
+      }
+
+      // appel API logout
+      await logoutUser(token);
+
+      // supprimer token local
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_role");
+
+      // redirection
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const menu = [
     { name: "Users List", icon: Users, path: "/admin/users" },
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
@@ -10,13 +40,17 @@ export default function Sidebar() {
 
   return (
     <div className="w-20 md:w-72 h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white flex flex-col border-r border-white/10 shadow-2xl transition-all duration-300 overflow-hidden">
-      {/* Header + Logo */}
+
+      {/* Header */}
       <div className="p-6 flex items-center gap-3 border-b border-white/10">
         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30">
           <Logo />
         </div>
+
         <div className="hidden md:block">
-          <div className="font-semibold text-xl tracking-tight">Pochita</div>
+          <div className="font-semibold text-xl tracking-tight">
+            Pochita
+          </div>
         </div>
       </div>
 
@@ -24,6 +58,7 @@ export default function Sidebar() {
       <nav className="flex-1 px-3 py-8 flex flex-col gap-2">
         {menu.map((item) => {
           const Icon = item.icon;
+
           return (
             <NavLink
               key={item.path}
@@ -37,8 +72,12 @@ export default function Sidebar() {
               }
             >
               <div className="flex items-center justify-center w-6">
-                <Icon size={22} className="transition-transform group-hover:scale-110" />
+                <Icon
+                  size={22}
+                  className="transition-transform group-hover:scale-110"
+                />
               </div>
+
               <span className="hidden md:block text-sm tracking-wide">
                 {item.name}
               </span>
@@ -55,12 +94,15 @@ export default function Sidebar() {
             alt="Avatar"
             className="w-12 h-12 rounded-full ring-2 ring-white/30 object-cover"
           />
+
           <div className="hidden md:block flex-1 min-w-0">
             <div className="font-medium text-sm truncate">Admin</div>
             <div className="text-xs text-white/60">admin@gmail.com</div>
           </div>
+
           <button
-            className="hidden md:block p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+            onClick={handleLogout}
+            className="hidden md:block p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
             title="Déconnexion"
           >
             <LogOut size={18} />
