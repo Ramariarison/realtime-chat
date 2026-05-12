@@ -7,3 +7,11 @@ export async function registerUser(formData: FormData) {
     body: formData,
   });
 }
+
+export async function loginUser(formData: FormData) {
+
+  return await apiFetch("/login", {
+    method: "POST",
+    body: formData,
+  });
+}
