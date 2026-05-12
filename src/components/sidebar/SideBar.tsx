@@ -29,6 +29,8 @@ export default function Sidebar() {
       await logoutUser(token);
 
       localStorage.removeItem("token");
+      
+      localStorage.removeItem("user_role");
 
       navigate("/");
 
