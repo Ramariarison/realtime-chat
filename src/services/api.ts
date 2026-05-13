@@ -37,6 +37,14 @@ export async function apiFetch(
     throw new Error(errorMessages || errorData.message || "Erreur de validation");
   }
 
+  // Gérer expiration token (401)
+  if (response.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_role");
+    window.location.href = "/";
+    throw new Error("Session expirée, veuillez vous reconnecter.");
+  }
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || `Erreur ${response.status}: ${response.statusText}`);
