@@ -1,22 +1,52 @@
 import { Users, UserCheck, UserLock, Edit, Trash, Search, Filter, UserPlus, CheckCircle, Inspect } from "lucide-react"
+import { useEffect, useState } from "react";
+import { getStats, getUsers } from "../../services/userService";
 
 export default function UserList() {
 
-    const Accounts = [
+    type User = {
+        id: number;
+        avatar: string;
+        name: string;
+        email: string;
+        status: number
+    };
 
-        { id: 1, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Accepted" },
+    const [users, setUsers] = useState<User[]>([]);
 
-        { id: 2, name: "Fetra Faneva", email: "faneva@gmail.com", status: "Pending" },
+    const [sum, setSum] = useState();
 
-        { id: 3, name: "Cino Nomena", email: "cino@gmail.com", status: "Pending" },
+    const [sumValidated, setSumValidated] = useState();
 
-        { id: 4, name: "Fiderana Antsa", email: "fiderana@gmail.com", status: "Accepted" },
+    const [sumPending, setSumPending] = useState();
 
-        { id: 5, name: "Andry Ramariarison", email: "andry@gmail.com", status: "Accepted" },
+    const token = localStorage.getItem("token");
 
-        { id: 6, name: "Fetra Faneva", email: "faneva@gmail.com", status: "Pending" },
+    useEffect(() => {
+        async function fetchUsers(){
+            try {
+                const response = await getUsers(token);
+                setUsers(response.data);
+            } catch (error) {
+                console.error(error);
+            };
+        }
 
-    ]
+        fetchUsers();
+
+        async function fetchStats(){
+            try {
+                const response = await getStats(token);
+                setSum(response.sumUsers);
+                setSumValidated(response.sumValidatedUsers);
+                setSumPending(response.sumPendingUsers);
+            } catch (error) {
+                console.error(error);
+            };
+        }
+    
+        fetchStats();
+    }, []);
 
     return (
         <div className="flex flex-col overflow-auto">
@@ -48,7 +78,7 @@ export default function UserList() {
                     {/* Content */}
                     <div className="relative z-10">
                         <p className="text-white text-sm font-semibold">Total Users</p>
-                        <h2 className="text-3xl text-white font-bold mt-0.5">500</h2>
+                        <h2 className="text-3xl text-white font-bold mt-0.5">{sum}</h2>
                     </div>
 
                     {/* Icon */}
@@ -71,7 +101,7 @@ export default function UserList() {
                     {/* Text */}
                     <div className="relative z-10">
                         <p className="text-white text-sm font-semibold">Validated Users</p>
-                        <h2 className="text-3xl text-white font-bold mt-0.5">300</h2>
+                        <h2 className="text-3xl text-white font-bold mt-0.5">{sumValidated}</h2>
                     </div>
 
                     {/* Icon */}
@@ -94,7 +124,7 @@ export default function UserList() {
                     {/* Text */}
                     <div className="relative z-10">
                         <p className="text-white text-sm font-semibold">Pending Users</p>
-                        <h2 className="text-3xl text-white font-bold mt-0.5">100</h2>
+                        <h2 className="text-3xl text-white font-bold mt-0.5">{sumPending}</h2>
                     </div>
 
                     {/* Icon */}
@@ -177,32 +207,32 @@ export default function UserList() {
 
                     <tbody>
 
-                        {Accounts.map((Account) => (
+                        {users.map((user) => (
 
-                            <tr key={Account.id} className="border-b border-gray-200 text-gray-600 text-sm">
+                            <tr key={user.id} className="border-b border-gray-200 text-gray-600 text-sm">
 
                                 <td className="p-3 align-middle">
                                     <div className="flex justify-center items-center">
                                         <img 
                                             className="w-10 h-10 rounded-full ring-2 ring-blue-300 object-cover"
-                                            src="/images/Rudd.jpg" 
-                                            alt="" 
+                                            src={`http://127.0.0.1:8000/storage/${user.avatar}`}
+                                            alt={user.name}
                                         />
                                     </div>
                                 </td>
 
-                                <td className="text-center p-4">{Account.name}</td>
+                                <td className="text-center p-4">{user.name}</td>
 
-                                <td className="text-center p-4">{Account.email}</td>
+                                <td className="text-center p-4">{user.email}</td>
 
                                 <td className="text-center align-middle">
                                     <span
                                         className={`font-semibold inline-block px-2 py-1 rounded-md text-xs
-                                        ${Account.status === "Accepted"
+                                        ${user.status === 1
                                         ? "text-emerald-600 border-2 border-emerald-100 bg-green-50 rounded-md"
                                         : "text-amber-600 border-2 border-amber-100 bg-amber-50 rounded-md"}`}
                                     >
-                                        {Account.status}
+                                        {user.status === 1 ? "Validated" : "Pending"}
                                     </span>
                                 </td>
 
@@ -213,13 +243,13 @@ export default function UserList() {
                                             <Inspect size={16} strokeWidth={3} className="text-blue-400 cursor-pointer" />
                                         </div>
 
-                                        {Account.status === "Accepted" && (
+                                        {user.status === 1 && (
                                             <div>
                                                 <Edit size={16} strokeWidth={3} className="text-emerald-400 cursor-pointer" />
                                             </div>
                                         )}
 
-                                        {Account.status === "Pending" && (
+                                        {user.status === 0 && (
                                             <div>
                                                 <CheckCircle size={16} strokeWidth={3} className="text-emerald-400 cursor-pointer" />
                                             </div>
