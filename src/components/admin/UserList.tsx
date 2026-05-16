@@ -19,7 +19,7 @@ export default function UserList() {
     ]
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-auto">
 
             {/* header title */}
 
@@ -153,19 +153,19 @@ export default function UserList() {
                 </div>
             </div>
 
-            <div className="mt-4 mx-4">
+            <div className="mt-4 mx-4 max-h-100 overflow-y-auto">
 
                 <table className="w-full">
 
-                    <thead>
+                    <thead className="sticky top-0 bg-white z-10">
 
                         <tr className="text-left border-b border-gray-300 text-gray-600 text-sm">
 
-                            <th className="p-4">Id</th>
+                            <th className="text-center p-4">Profile</th>
 
-                            <th className="p-4">Name</th>
+                            <th className="text-center p-4">Name</th>
 
-                            <th className="p-4">Email address</th>
+                            <th className="text-center p-4">Email address</th>
 
                             <th className="text-center p-4">Status</th>
 
@@ -181,11 +181,19 @@ export default function UserList() {
 
                             <tr key={Account.id} className="border-b border-gray-200 text-gray-600 text-sm">
 
-                                <td className="font-semibold p-4">{Account.id}</td>
+                                <td className="p-3 align-middle">
+                                    <div className="flex justify-center items-center">
+                                        <img 
+                                            className="w-10 h-10 rounded-full ring-2 ring-blue-300 object-cover"
+                                            src="/images/Rudd.jpg" 
+                                            alt="" 
+                                        />
+                                    </div>
+                                </td>
 
-                                <td className="p-4">{Account.name}</td>
+                                <td className="text-center p-4">{Account.name}</td>
 
-                                <td className="p-4">{Account.email}</td>
+                                <td className="text-center p-4">{Account.email}</td>
 
                                 <td className="text-center align-middle">
                                     <span
