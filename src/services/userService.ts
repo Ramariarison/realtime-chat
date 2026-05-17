@@ -15,3 +15,11 @@ export async function getStats(token: string) {
         token,
     });
 }
+
+export async function me(token: string) {
+
+    return await apiFetch("/user/user-info", {
+        method: "POST",
+        token,
+    });
+}

@@ -6,14 +6,37 @@ import {
 } from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router-dom";
-
 import Logo from "../ui/Logo";
-
 import { logoutUser } from "../../services/authService";
+import { me } from "../../services/userService";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
 
   const navigate = useNavigate();
+
+  type Me = {
+    avatar: string;
+    name: string;
+    email: string;
+  };
+
+  const [mee, setMee] = useState<Me | null>(null);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    async function meme(){
+      try {
+        const response = await me(token);
+        setMee(response.user_info);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    meme();
+  }, [])
 
   const handleLogout = async () => {
 
@@ -105,19 +128,19 @@ export default function Sidebar() {
 
         <div className="flex items-center gap-3 px-2 py-2 rounded-2xl hover:bg-white/10 transition-colors">
 
-          <img
-            src="/images/Rudd.jpg"
-            alt="Avatar"
-            className="w-12 h-12 rounded-full ring-2 ring-white/30 object-cover"
+          <img 
+              className="w-12 h-12 rounded-full ring-2 ring-blue-300 object-cover"
+              src={`http://127.0.0.1:8000/storage/${mee?.avatar}`}
+              alt={mee?.name}
           />
 
           <div className="hidden md:block flex-1 min-w-0">
             <div className="font-medium text-sm truncate">
-              Ramariarison
+              {mee?.name}
             </div>
 
             <div className="text-xs text-white/60">
-              andry@gmail.com
+              {mee?.email}
             </div>
           </div>
 
