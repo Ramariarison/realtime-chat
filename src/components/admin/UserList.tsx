@@ -9,7 +9,9 @@ import {
     UserPlus,
     CheckCircle,
     Inspect,
-    Loader2
+    Loader2,
+    Check,
+    X
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -32,6 +34,8 @@ export default function UserList() {
     const [sumPending, setSumPending] = useState<number>();
 
     const [message, setMessage] = useState('');
+
+    const [showMessage, setShowMessage] = useState(false);
 
     const [loading, setLoading] = useState(true);
 
@@ -81,9 +85,13 @@ export default function UserList() {
                 setMessage(response.message);
             }
 
-            await fetchData();
+            setShowMessage(true);
 
-            alert('User validated successfully!');
+            setTimeout(() => {
+                setShowMessage(false);
+            }, 3000);
+
+            await fetchData();
 
         } catch (error) {
 
@@ -98,6 +106,25 @@ export default function UserList() {
     return (
 
         <div className="flex flex-col overflow-auto">
+
+            {/* Toast notification de succés */}
+            <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
+                showMessage ? 'translate-y-4 opacity-100' : '-translate-y-full opacity-0'
+            }`}>
+                <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
+                
+                <Check className="w-5 h-5 flex-shrink-0" />
+
+                <span className="text-sm font-medium">{message}</span>
+
+                <button
+                    onClick={() => setShowMessage(false)}
+                    className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
+                >
+                    <X className="w-4 h-4" />
+                </button>
+                </div>
+            </div>
 
             {/* Header */}
 
