@@ -15,6 +15,8 @@ export default function Sidebar() {
 
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   type Me = {
     avatar: string;
     name: string;
@@ -27,11 +29,14 @@ export default function Sidebar() {
 
   useEffect(() => {
     async function meme(){
+      setLoading(true);
       try {
         const response = await me(token);
         setMee(response.user_info);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -126,33 +131,69 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="mt-auto p-4 border-t border-white/10">
 
-        <div className="flex items-center gap-3 px-2 py-2 rounded-2xl hover:bg-white/10 transition-colors">
+      {loading ? (
 
-          <img 
-              className="w-12 h-12 rounded-full ring-2 ring-blue-300 object-cover"
-              src={`http://127.0.0.1:8000/storage/${mee?.avatar}`}
-              alt={mee?.name}
-          />
+          <div className="flex items-center gap-3 px-2 py-2 rounded-2xl">
 
-          <div className="hidden md:block flex-1 min-w-0">
-            <div className="font-medium text-sm truncate">
-              {mee?.name}
-            </div>
+              {/* Avatar skeleton */}
 
-            <div className="text-xs text-white/60">
-              {mee?.email}
-            </div>
+              <div
+                  className="w-12 h-12 rounded-full ring-2 ring-blue-300 
+                  bg-white/20 animate-pulse"
+              ></div>
+
+              {/* Text skeleton */}
+
+              <div className="hidden md:flex flex-col gap-2 flex-1 min-w-0">
+
+                  <div
+                      className="h-4 w-32 rounded-md bg-white/20 animate-pulse"
+                  ></div>
+
+                  <div
+                      className="h-3 w-48 rounded-md bg-white/10 animate-pulse"
+                  ></div>
+
+              </div>
+
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="hidden md:block p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
-            title="Déconnexion"
-          >
-            <LogOut size={18} />
-          </button>
+      ) : (
 
-        </div>
+          <div className="flex items-center gap-3 px-2 py-2 rounded-2xl hover:bg-white/10 transition-colors">
+
+              <img
+                  className="w-12 h-12 rounded-full ring-2 ring-blue-300 object-cover"
+                  src={`http://127.0.0.1:8000/storage/${mee?.avatar}`}
+                  alt={mee?.name}
+              />
+
+              <div className="hidden md:block flex-1 min-w-0">
+
+                  <div className="font-medium text-sm truncate">
+                      {mee?.name}
+                  </div>
+
+                  <div className="text-xs text-white/60 truncate">
+                      {mee?.email}
+                  </div>
+
+              </div>
+
+              <button
+                  onClick={handleLogout}
+                  className="hidden md:block p-2 text-white/70 hover:text-white 
+                  hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
+                  title="Déconnexion"
+              >
+
+                  <LogOut size={18} />
+
+              </button>
+
+          </div>
+
+      )}
 
       </div>
 
