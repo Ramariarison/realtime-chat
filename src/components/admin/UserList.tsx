@@ -1,6 +1,6 @@
 import { Users, UserCheck, UserLock, Edit, Trash, Search, Filter, UserPlus, CheckCircle, Inspect } from "lucide-react"
 import { useEffect, useState } from "react";
-import { getStats, getUsers } from "../../services/userService";
+import { getStats, getUsers, valideUser } from "../../services/userService";
 
 export default function UserList() {
 
@@ -20,33 +20,56 @@ export default function UserList() {
 
     const [sumPending, setSumPending] = useState();
 
+    const [message, setMessage] = useState('');
+
     const token = localStorage.getItem("token");
 
+    // Fonction globale de refetch
+    const fetchData = async () => {
+        try {
+
+            // Users
+            const usersResponse = await getUsers(token);
+            setUsers(usersResponse.data);
+
+            // Stats
+            const statsResponse = await getStats(token);
+
+            setSum(statsResponse.sumUsers);
+            setSumValidated(statsResponse.sumValidatedUsers);
+            setSumPending(statsResponse.sumPendingUsers);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Chargement initial
     useEffect(() => {
-        async function fetchUsers(){
-            try {
-                const response = await getUsers(token);
-                setUsers(response.data);
-            } catch (error) {
-                console.error(error);
-            };
-        }
-
-        fetchUsers();
-
-        async function fetchStats(){
-            try {
-                const response = await getStats(token);
-                setSum(response.sumUsers);
-                setSumValidated(response.sumValidatedUsers);
-                setSumPending(response.sumPendingUsers);
-            } catch (error) {
-                console.error(error);
-            };
-        }
-    
-        fetchStats();
+        fetchData();
     }, []);
+
+    // Valider un utilisateur
+    const handleValideUser = async (userId: number) => {
+        try {
+            const response = await valideUser(userId, token);
+            
+            // Récupération du message
+            if (response && response.message) {
+                setMessage(response.message);
+            }
+
+            await fetchData();
+            
+            // Message de succès temporaire
+            alert('User validated successfully!');
+            
+        } catch (error) {
+            console.error('Erreur lors de la validation:', error);
+            setMessage('Failed to validate user');
+            alert('Error validating user');
+        }
+    }
 
     return (
         <div className="flex flex-col overflow-auto">
@@ -251,7 +274,12 @@ export default function UserList() {
 
                                         {user.status === 0 && (
                                             <div>
-                                                <CheckCircle size={16} strokeWidth={3} className="text-emerald-400 cursor-pointer" />
+                                                <CheckCircle 
+                                                    size={16} 
+                                                    strokeWidth={3} 
+                                                    className="text-emerald-400 cursor-pointer" 
+                                                    onClick={() => handleValideUser(user.id)}    
+                                                />
                                             </div>
                                         )}
 
