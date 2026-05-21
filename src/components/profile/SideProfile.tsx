@@ -1,15 +1,28 @@
 import { ChevronRight } from "lucide-react";
 
-export default function LeftSide() {
+// Props
+type Props = {
+  loading: boolean,
+  src: string,
+};
+
+export default function LeftSide({ loading, src }: Props) {
+
+  const load = loading;
+
   return (
-    <div className="p-6 w-80 md:w-96 bg-gray-100 flex flex-col h-full items-center text-center">
-      
-      <div className="w-42 h-42 mb-6">
-        <img
-          className="h-full w-full rounded-full object-cover"
-          src="/images/emily.jpg"
-        />
-      </div>
+    <div className="p-6 w-80 md:w-96 bg-gray-100 flex flex-col h-full justify-center items-center text-center">
+      { load ? ( 
+        <div className="w-42 h-42 rounded-full mb-6 bg-white animate-pulse">
+        </div>
+       ) : ( 
+        <div className="w-42 h-42 mb-6">
+          <img
+            className="h-full w-full rounded-full object-cover"
+            src={src}
+          />
+        </div>
+      )}
 
       <h1 className="text-2xl font-semibold text-gray-800 mb-2">
         Let's get you set up
