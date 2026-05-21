@@ -1,7 +1,4 @@
 import {
-    Users,
-    UserCheck,
-    UserLock,
     Edit,
     Trash,
     Search,
@@ -15,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { destroy, getStats, getUsers, valideUser } from "../../services/userService";
+import { destroy, getUsers, valideUser } from "../../services/userService";
 
 export default function UserList() {
 
@@ -28,10 +25,6 @@ export default function UserList() {
     };
 
     const [users, setUsers] = useState<User[]>([]);
-
-    const [sum, setSum] = useState<number>();
-    const [sumValidated, setSumValidated] = useState<number>();
-    const [sumPending, setSumPending] = useState<number>();
 
     const [message, setMessage] = useState('');
 
@@ -51,13 +44,6 @@ export default function UserList() {
             // Users
             const usersResponse = await getUsers(token);
             setUsers(usersResponse.data);
-
-            // Stats
-            const statsResponse = await getStats(token);
-
-            setSum(statsResponse.sumUsers);
-            setSumValidated(statsResponse.sumValidatedUsers);
-            setSumPending(statsResponse.sumPendingUsers);
 
         } catch (error) {
 
@@ -128,7 +114,7 @@ export default function UserList() {
 
     return (
 
-        <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col h-screen overflow-hidden">
 
             {/* Toast notification de succés */}
             <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
@@ -136,150 +122,20 @@ export default function UserList() {
             }`}>
                 <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
                 
-                <Check className="w-5 h-5 flex-shrink-0" />
+                    <Check className="w-5 h-5 flex-shrink-0" />
 
-                <span className="text-sm font-medium">{message}</span>
+                    <span className="text-sm font-medium">
+                        {message}
+                    </span>
 
-                <button
-                    onClick={() => setShowMessage(false)}
-                    className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
-                >
-                    <X className="w-4 h-4" />
-                </button>
-                </div>
-            </div>
-
-            {/* Header */}
-
-            <h2 className="ml-8 mt-4 font-semibold text-xl">
-                User Statistics
-            </h2>
-
-            <p className="ml-8 mt-2 text-sm text-gray-500">
-                Real-time overview of user engagement and growth
-            </p>
-
-            {/* Stats cards */}
-
-            <div className="mt-4 ml-4 mr-4 grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-
-                {/* Total users */}
-
-                <div
-                    className="relative shadow-sm flex items-center justify-between rounded-lg p-6 overflow-hidden"
-                    style={{
-                        backgroundImage: "url('/images/bg-card.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                >
-
-                    <div className="absolute inset-0 bg-blue-600/40"></div>
-
-                    <div className="relative z-10">
-
-                        <p className="text-white text-sm font-semibold">
-                            Total Users
-                        </p>
-
-                        {loading ? (
-
-                            <div className="h-8 w-20 mt-2 rounded bg-white/30 animate-pulse"></div>
-
-                        ) : (
-
-                            <h2 className="text-3xl text-white font-bold mt-0.5">
-                                {sum}
-                            </h2>
-
-                        )}
-
-                    </div>
-
-                    <div className="relative z-10 p-4 bg-white/20 backdrop-blur-md text-white rounded-full">
-                        <Users size={32} strokeWidth={2.5} />
-                    </div>
+                    <button
+                        onClick={() => setShowMessage(false)}
+                        className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
+                    >
+                        <X className="w-4 h-4" />
+                    </button>
 
                 </div>
-
-                {/* Validated users */}
-
-                <div
-                    className="relative shadow-sm flex items-center justify-between rounded-lg p-6 overflow-hidden"
-                    style={{
-                        backgroundImage: "url('/images/bg-card.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                >
-
-                    <div className="absolute inset-0 bg-green-600/40"></div>
-
-                    <div className="relative z-10">
-
-                        <p className="text-white text-sm font-semibold">
-                            Validated Users
-                        </p>
-
-                        {loading ? (
-
-                            <div className="h-8 w-20 mt-2 rounded bg-white/30 animate-pulse"></div>
-
-                        ) : (
-
-                            <h2 className="text-3xl text-white font-bold mt-0.5">
-                                {sumValidated}
-                            </h2>
-
-                        )}
-
-                    </div>
-
-                    <div className="relative z-10 p-4 bg-white/20 backdrop-blur-md text-white rounded-full">
-                        <UserCheck size={32} strokeWidth={2.5} />
-                    </div>
-
-                </div>
-
-                {/* Pending users */}
-
-                <div
-                    className="relative shadow-sm flex items-center justify-between rounded-lg p-6 overflow-hidden"
-                    style={{
-                        backgroundImage: "url('/images/bg-card.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                >
-
-                    <div className="absolute inset-0 bg-red-600/40"></div>
-
-                    <div className="relative z-10">
-
-                        <p className="text-white text-sm font-semibold">
-                            Pending Users
-                        </p>
-
-                        {loading ? (
-
-                            <div className="h-8 w-20 mt-2 rounded bg-white/30 animate-pulse"></div>
-
-                        ) : (
-
-                            <h2 className="text-3xl text-white font-bold mt-0.5">
-                                {sumPending}
-                            </h2>
-
-                        )}
-
-                    </div>
-
-                    <div className="relative z-10 p-4 bg-white/20 backdrop-blur-md text-white rounded-full">
-                        <UserLock size={32} strokeWidth={2.5} />
-                    </div>
-
-                </div>
-
             </div>
 
             {/* Users list */}
@@ -346,7 +202,7 @@ export default function UserList() {
 
             {/* Table */}
 
-            <div className="mt-4 mx-4 max-h-100 overflow-y-auto">
+            <div className="mt-4 mx-4 flex-1 overflow-y-auto">
 
                 {loading ? (
 
@@ -364,11 +220,25 @@ export default function UserList() {
 
                             <tr className="text-left border-b border-gray-300 text-gray-600 text-sm">
 
-                                <th className="text-center p-4">Profile</th>
-                                <th className="text-center p-4">Name</th>
-                                <th className="text-center p-4">Email address</th>
-                                <th className="text-center p-4">Status</th>
-                                <th className="text-center p-4">Actions</th>
+                                <th className="text-center p-4">
+                                    Profile
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Name
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Email address
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Status
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Actions
+                                </th>
 
                             </tr>
 
@@ -414,7 +284,9 @@ export default function UserList() {
                                             : "text-amber-600 border-2 border-amber-100 bg-amber-50"}`}
                                         >
 
-                                            {user.status === 1 ? "Validated" : "Pending"}
+                                            {user.status === 1
+                                                ? "Validated"
+                                                : "Pending"}
 
                                         </span>
 
