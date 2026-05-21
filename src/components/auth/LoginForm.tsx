@@ -2,8 +2,8 @@ import Input from "../ui/Input"
 import Button from "../ui/Button"
 import Logo from "../ui/Logo"
 import { useEffect, useState } from "react"
-import { loginUser } from "../../services/authService"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth"
 
 type Props = {
   switchToRegister: () => void
@@ -12,21 +12,12 @@ type Props = {
 export default function LoginForm({ switchToRegister }: Props) {
 
   const [error, setError] = useState('')
+
   const [showError, setShowError] = useState(false)
-  const [loading, setLoading] = useState(false)
+
+  const { login, isLoading, user } = useAuth()
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if(error){
-      setShowError(true);
-      const timer = setTimeout(() => {
-        setShowError(false);
-        setTimeout(() => setError(''), 300);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error])
 
   const [formData, setFormData] = useState({
     email: '',
@@ -43,52 +34,47 @@ export default function LoginForm({ switchToRegister }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
-    setLoading(true);
+
     setError('');
 
     if ( !formData.email || !formData.password ){
+
       setError('Please fill in the fields !');
-      setLoading(false);
+
       return;
     }
 
     const data = new FormData();
+
     data.append('email', formData.email);
+
     data.append('password', formData.password);
 
     try {
       
-      const response = await loginUser(data);
-
-      localStorage.setItem("token", response.access_token);
-
-      localStorage.setItem("user_role", response.user.role);
-
-      const role = response.user.role;
+      login(data);
 
       setFormData({
         email: '',
         password: ''
       });
 
-      if (role === 'admin'){
-        navigate('/admin/users')
-      }
-      else {
-        navigate('/user/chat')
-      }
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
 
       setError(err.message);
-      
-    } finally {
-
-      setLoading(false);
-
     }
   }
+
+  useEffect(() => {
+    if(user) {
+      if(user.role === 'admin') {
+        navigate('/admin/users')
+      } else {
+        navigate('/user/chat')
+      }
+    }
+  }, [user, navigate])
 
   return (
     <>
@@ -156,7 +142,7 @@ export default function LoginForm({ switchToRegister }: Props) {
 
         </div>
 
-        { loading ? (<Button type="submit">Sending data...</Button>) : (<Button type="submit">Login</Button>) }
+        { isLoading ? (<Button type="submit">Sending data...</Button>) : (<Button type="submit">Login</Button>) }
 
         <p className="text-sm text-gray-900">
           Don’t have an account ?{" "}

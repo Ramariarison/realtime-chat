@@ -1,20 +1,28 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+import { useAuth } from "../hooks/useAuth";
+
 type ProtectedRouteProps = {
   allowedRoles: string[];
 };
 
-export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("user_role");
+export default function ProtectedRoute({
+  allowedRoles,
+}: ProtectedRouteProps) {
 
-  if (!token) {
+  const { user } = useAuth();
+
+  // Pas connecté
+  if (!user) {
     return <Navigate to="/" replace />;
   }
 
-  if (!allowedRoles.includes(role || "")) {
+  // Vérification du rôle
+  if (!allowedRoles.includes(user.role)) {
 
-    if (role === 'admin') return <Navigate to="/admin/users" replace />;
+    if (user.role === "admin") {
+      return <Navigate to="/admin/users" replace />;
+    }
 
     return <Navigate to="/user/chat" replace />;
   }
