@@ -21,7 +21,7 @@ export default function ProtectedRoute({
   if (!allowedRoles.includes(user.role)) {
 
     if (user.role === "admin") {
-      return <Navigate to="/admin/users" replace />;
+      return <Navigate to="/admin/dashboard" replace />;
     }
 
     return <Navigate to="/user/chat" replace />;

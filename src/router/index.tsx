@@ -34,8 +34,8 @@ export default function AppRouter() {
         {/* Admin */}
         <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
           <Route element={<AdminLayout />}>
-            <Route path="/admin/users" element={<UserList />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/users" element={<UserList />} />
             <Route path="/admin/profile" element={<ProfileAdminPage />} />
           </Route>
         </Route>

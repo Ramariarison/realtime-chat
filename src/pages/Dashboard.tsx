@@ -15,7 +15,7 @@ export default function Dashboard() {
 
         <div>
 
-            <h1 className="text-2xl font-bold m-4">
+            <h1 className="mx-8 text-gray-700 text-xl font-semibold m-4">
                 Dashboard
             </h1>
 
