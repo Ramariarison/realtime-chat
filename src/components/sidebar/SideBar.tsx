@@ -1,8 +1,8 @@
 import {
   MessageCircle,
-  Settings,
   User,
   LogOut,
+  Users,
 } from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -69,8 +69,8 @@ export default function Sidebar() {
 
   const menu = [
     { name: "Chat", icon: MessageCircle, path: "/user/chat" },
-    { name: "Profile", icon: User, path: "/user/profile" },
-    { name: "Settings", icon: Settings, path: "/user/settings" },
+    { name: "Friends", icon: Users, path: "/user/settings" },
+    { name: "Profile informations", icon: User, path: "/user/profile" },
   ];
 
   return (

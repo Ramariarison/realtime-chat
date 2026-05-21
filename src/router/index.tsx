@@ -6,7 +6,7 @@ import AdminLayout from "../layout/AdminLayout"
 // Pages
 import AuthPage from "../pages/AuthPage"
 import ChatPage from "../pages/ChatPage"
-import Profilepage from "../pages/ProfileUserPage"
+import ProfileUserpage from "../pages/ProfileUserPage"
 import UserList from "../components/admin/UserList"
 import ProtectedRoute from "../components/ProtectedRoute"
 import GuestRoute from "../components/GuestRoute"
@@ -26,7 +26,7 @@ export default function AppRouter() {
         <Route element={<ProtectedRoute allowedRoles={['normal']} />}>
           <Route element={<MainLayout />}>
             <Route path="/user/chat" element={<ChatPage />} />
-            <Route path="/user/profile" element={<Profilepage />} />
+            <Route path="/user/profile" element={<ProfileUserpage />} />
           </Route>
         </Route>
 
