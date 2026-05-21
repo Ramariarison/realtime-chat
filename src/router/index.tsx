@@ -6,10 +6,11 @@ import AdminLayout from "../layout/AdminLayout"
 // Pages
 import AuthPage from "../pages/AuthPage"
 import ChatPage from "../pages/ChatPage"
-import Profilepage from "../pages/ProfilePage"
+import Profilepage from "../pages/ProfileUserPage"
 import UserList from "../components/admin/UserList"
 import ProtectedRoute from "../components/ProtectedRoute"
 import GuestRoute from "../components/GuestRoute"
+import ProfileAdminPage from "../pages/ProfileAdminPage"
 
 export default function AppRouter() {
   return (
@@ -34,6 +35,7 @@ export default function AppRouter() {
           <Route element={<AdminLayout />}>
             <Route path="/admin/users" element={<UserList />} />
             <Route path="/admin/dashboard" element={<div>Dashboard Admin</div>} />
+            <Route path="/admin/profile" element={<ProfileAdminPage />} />
           </Route>
         </Route>
 
