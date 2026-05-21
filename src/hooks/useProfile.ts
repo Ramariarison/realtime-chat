@@ -65,10 +65,13 @@ export function useProfile() {
 
         e.preventDefault();
 
+        // Vérification modifications
         if(
             formData.name === user?.name &&
             formData.email === user?.email &&
-            !avatar
+            !avatar &&
+            !formData.current_pass &&
+            !formData.new_pass
         ) {
 
             alert("Aucune modification détectée");
@@ -85,20 +88,52 @@ export function useProfile() {
             data.append("name", formData.name);
             data.append("email", formData.email);
 
+            // Password
+            if(formData.current_pass) {
+
+                data.append(
+                    "current_pass",
+                    formData.current_pass
+                );
+            }
+
+            if(formData.new_pass) {
+
+                data.append(
+                    "new_pass",
+                    formData.new_pass
+                );
+            }
+
+            // Avatar
             if(avatar) {
+
                 data.append("avatar", avatar);
             }
 
-            const response = await updateProfile(data, token);
+            const response =
+                await updateProfile(data, token);
 
+            // Reset avatar
             setAvatar(null);
 
+            // Reset passwords
+            setFormData(prev => ({
+                ...prev,
+                current_pass: "",
+                new_pass: "",
+            }));
+
+            // Update user
             setUser(response.user);
 
+            // Update localStorage
             localStorage.setItem(
                 "user",
                 JSON.stringify(response.user)
             );
+
+            alert("Profil mis à jour avec succès");
 
         } catch(error) {
 
