@@ -31,3 +31,11 @@ export async function valideUser(user: number, token: string) {
         token,
     });
 }
+
+export async function destroy(user: number, token: string) {
+
+    return await apiFetch(`/admin/users/${user}/delete`, {
+        method: "DELETE",
+        token,
+    });
+}

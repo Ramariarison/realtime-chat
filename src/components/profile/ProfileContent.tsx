@@ -1,6 +1,14 @@
 import { Image } from "lucide-react";
 
-export default function ProfileContent() {
+// Props
+type Props = {
+    loading: boolean,
+    Name: string,
+    Email: string,
+    src: string,
+};
+
+export default function ProfileContent({ loading, Name, Email, src }: Props) {
     return (
         <div className="flex flex-1 justify-center items-center">  
             <form action="#">
@@ -8,25 +16,25 @@ export default function ProfileContent() {
                     <div>
                         <label htmlFor="" className="block text-sm/6 font-semibold text-gray-900">Name</label>
                         <div className="mt-2">
-                            <input placeholder="Andry" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
+                            <input value={Name} className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm/6 font-semibold text-gray-900">Email</label>
+                        <label className="block text-sm/6 font-semibold text-gray-900">Email Address</label>
                         <div className="mt-2">
-                            <input placeholder="andry@gmail.com" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
+                            <input value={Email} className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
                         </div>
                     </div>
                     <div className="sm:col-span-2">
-                        <label className="block text-sm/6 font-semibold text-gray-900">Password</label>
+                        <label className="block text-sm/6 font-semibold text-gray-900">Current Password</label>
                         <div className="mt-2">
-                            <input placeholder="Password" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
+                            <input placeholder="Current password" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
                         </div>
                     </div>
                     <div className="sm:col-span-2">
-                        <label className="block text-sm/6 font-semibold text-gray-900">Password confirmation</label>
+                        <label className="block text-sm/6 font-semibold text-gray-900">New Password</label>
                         <div className="mt-2">
-                            <input placeholder="Password confirmation" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
+                            <input placeholder="New password" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600" type="text" />
                         </div>
                     </div>
 
@@ -35,12 +43,19 @@ export default function ProfileContent() {
                     <div>
                         <label className="block text-sm/6 font-semibold text-gray-900">Avatar</label>
                         <div className="mt-2 flex items-center gap-4">
-                            <div className="w-12 h-12">
-                                <img 
-                                    src="/images/emily.jpg"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
+
+                            {loading ? (
+                                <div className="w-12 h-12 rounded-full bg-gray-100 animate-pulse">
+                                </div>
+                            ) : (
+                                <div className="w-12 h-12">
+                                    <img 
+                                        src={src}
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
+                            )}
+
                             <div>
                                 <button className="px-3 py-1.5 outline-1 -outline-offset-1 outline-gray-300 rounded-sm text-sm/6 font-semibold cursor-pointer">
                                     Change
@@ -65,7 +80,7 @@ export default function ProfileContent() {
                             </p>
 
                             <p className="text-xs text-gray-500 mt-1">
-                                PNG, JPG, GIF up to 10MB
+                                PNG, JPG, GIF up to 1MB
                             </p>
 
                         </div>

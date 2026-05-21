@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { getStats, getUsers, valideUser } from "../../services/userService";
+import { destroy, getStats, getUsers, valideUser } from "../../services/userService";
 
 export default function UserList() {
 
@@ -95,12 +95,35 @@ export default function UserList() {
 
         } catch (error) {
 
-            console.error('Erreur lors de la validation:', error);
-
-            setMessage('Failed to validate user');
-
-            alert('Error validating user');
+            console.error(error);
         }
+    }
+
+    // Supprimer utilisateur
+    const handleDeleteUser = async (userId: number) => {
+
+        try {
+
+            const response = await destroy(userId, token);
+
+            if(response && response.message) {
+                setMessage(response.message);
+            }
+
+            setShowMessage(true);
+
+            setTimeout(() => {
+                setShowMessage(false);
+            }, 3000);
+
+            await fetchData();
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
     }
 
     return (
@@ -432,6 +455,7 @@ export default function UserList() {
                                                 size={16}
                                                 strokeWidth={3}
                                                 className="text-red-400 cursor-pointer"
+                                                onClick={() => handleDeleteUser(user.id)}
                                             />
 
                                         </div>

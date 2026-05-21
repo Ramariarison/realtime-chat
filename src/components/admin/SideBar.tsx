@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, LogOut } from "lucide-react";
+import { Users, LayoutDashboard, LogOut, User } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../ui/Logo";
 import { logoutUser } from "../../services/authService";
@@ -73,8 +73,9 @@ export default function Sidebar() {
   };
 
   const menu = [
-    { name: "Users List", icon: Users, path: "/admin/users" },
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+    { name: "Account Management", icon: Users, path: "/admin/users" },
+    { name: "Profile informations", icon: User, path: "/admin/profile" }
   ];
 
   return (
