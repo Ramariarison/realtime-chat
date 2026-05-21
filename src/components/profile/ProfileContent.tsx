@@ -1,109 +1,18 @@
 import { Image } from "lucide-react";
-import { useEffect, useState } from "react";
 
-import { useAuth } from "../../hooks/useAuth";
-import { updateProfile } from "../../services/authService";
+import { useProfile } from "../../hooks/useProfile";
 
 export default function ProfileContent() {
 
-    const { user, setUser } = useAuth();
-
-    const token = localStorage.getItem("token");
-
-    const [loading, setLoading] = useState(false);
-
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        current_pass: "",
-        new_pass: "",
-    });
-
-    const [avatar, setAvatar] = useState<File | null>(null);
-
-    // Préremplir les champs
-    useEffect(() => {
-
-        if(user) {
-
-            setFormData({
-                name: user.name || "",
-                email: user.email || "",
-                current_pass: "",
-                new_pass: "",
-            });
-        }
-
-    }, [user]);
-
-    // inputs
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    // avatar
-    const handleAvatarChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-
-        if(e.target.files && e.target.files[0]) {
-            setAvatar(e.target.files[0]);
-        }
-    };
-
-    // Submit
-    const handleSubmit = async (
-        e: React.FormEvent<HTMLFormElement>
-    ) => {
-
-        e.preventDefault();
-
-        // Vérification changement
-        if(
-            formData.name === user?.name &&
-            formData.email === user?.email
-        ) {
-
-            alert("Aucune modification détectée");
-
-            return;
-        }
-
-        try {
-
-            setLoading(true);
-
-            const data = new FormData();
-
-            data.append("name", formData.name);
-            data.append("email", formData.email);
-
-            const response = await updateProfile(data, token);
-
-            setUser(response.user);
-
-            localStorage.setItem(
-                "user",
-                JSON.stringify(response.user)
-            );
-
-            alert("Profil mis à jour avec succès");
-
-        } catch(error) {
-
-            console.error(error);
-
-        } finally {
-
-            setLoading(false);
-        }
-    };
+        const {
+        user,
+        loading,
+        avatar,
+        formData,
+        handleInputChange,
+        handleAvatarChange,
+        handleSubmit,
+    } = useProfile();
 
     return (
         <div className="flex flex-1 justify-center items-center">
@@ -201,7 +110,7 @@ export default function ProfileContent() {
                             <div className="w-12 h-12">
 
                                 <img
-                                    src={`http://127.0.0.1:8000/storage/${user?.avatar}?t=${Date.now()}`}
+                                    src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
                                     className="w-full h-full rounded-full object-cover"
                                 />
 
