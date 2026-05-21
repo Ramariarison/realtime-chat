@@ -114,7 +114,7 @@ export default function UserList() {
 
     return (
 
-        <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col h-screen overflow-hidden">
 
             {/* Toast notification de succés */}
             <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
@@ -122,16 +122,19 @@ export default function UserList() {
             }`}>
                 <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]">
                 
-                <Check className="w-5 h-5 flex-shrink-0" />
+                    <Check className="w-5 h-5 flex-shrink-0" />
 
-                <span className="text-sm font-medium">{message}</span>
+                    <span className="text-sm font-medium">
+                        {message}
+                    </span>
 
-                <button
-                    onClick={() => setShowMessage(false)}
-                    className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
-                >
-                    <X className="w-4 h-4" />
-                </button>
+                    <button
+                        onClick={() => setShowMessage(false)}
+                        className="ml-auto hover:bg-green-600 rounded-full p-1 transition-colors"
+                    >
+                        <X className="w-4 h-4" />
+                    </button>
+
                 </div>
             </div>
 
@@ -199,7 +202,7 @@ export default function UserList() {
 
             {/* Table */}
 
-            <div className="mt-4 mx-4 max-h-100 overflow-y-auto">
+            <div className="mt-4 mx-4 flex-1 overflow-y-auto">
 
                 {loading ? (
 
@@ -217,11 +220,25 @@ export default function UserList() {
 
                             <tr className="text-left border-b border-gray-300 text-gray-600 text-sm">
 
-                                <th className="text-center p-4">Profile</th>
-                                <th className="text-center p-4">Name</th>
-                                <th className="text-center p-4">Email address</th>
-                                <th className="text-center p-4">Status</th>
-                                <th className="text-center p-4">Actions</th>
+                                <th className="text-center p-4">
+                                    Profile
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Name
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Email address
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Status
+                                </th>
+
+                                <th className="text-center p-4">
+                                    Actions
+                                </th>
 
                             </tr>
 
@@ -267,7 +284,9 @@ export default function UserList() {
                                             : "text-amber-600 border-2 border-amber-100 bg-amber-50"}`}
                                         >
 
-                                            {user.status === 1 ? "Validated" : "Pending"}
+                                            {user.status === 1
+                                                ? "Validated"
+                                                : "Pending"}
 
                                         </span>
 
