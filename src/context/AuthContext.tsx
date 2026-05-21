@@ -1,5 +1,7 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
+
 import { loginUser } from '../services/authService';
+
 import { AuthContext } from './AuthContext';
 
 interface User {
@@ -11,33 +13,71 @@ interface User {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+
   const [user, setUser] = useState<User | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
 
+  // Charger l'utilisateur depuis le localStorage au refresh
+  useEffect(() => {
+
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+
+      setUser(JSON.parse(storedUser));
+
+    }
+
+  }, []);
+
   const login = async (data: FormData) => {
+
     setIsLoading(true);
 
     try {
+
       const response = await loginUser(data);
 
-      const userData = response.user;
+      // Stocker le token
+      localStorage.setItem('token', response.access_token);
 
-      setUser(userData);
+      // Stocker l'utilisateur
+      localStorage.setItem(
+        'user',
+        JSON.stringify(response.user)
+      );
 
-      localStorage.setItem('token', userData.access_token);
+      // Mettre à jour le context
+      setUser(response.user);
+
     } finally {
+
       setIsLoading(false);
+
     }
+
   };
 
   const logout = () => {
+
     setUser(null);
 
     localStorage.removeItem('token');
+
+    localStorage.removeItem('user');
+
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

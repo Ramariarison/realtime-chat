@@ -5,67 +5,14 @@ import {
   Users,
 } from "lucide-react";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Logo from "../ui/Logo";
-import { logoutUser } from "../../services/authService";
-import { me } from "../../services/userService";
-import { useEffect, useState } from "react";
+
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Sidebar() {
 
-  const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
-
-  type Me = {
-    avatar: string;
-    name: string;
-    email: string;
-  };
-
-  const [mee, setMee] = useState<Me | null>(null);
-
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    async function meme(){
-      setLoading(true);
-      try {
-        const response = await me(token);
-        setMee(response.user_info);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    meme();
-  }, [])
-
-  const handleLogout = async () => {
-
-    try {
-
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        navigate("/");
-        return;
-      }
-
-      await logoutUser(token);
-
-      localStorage.removeItem("token");
-      
-      localStorage.removeItem("user_role");
-
-      navigate("/");
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { user, logout, isLoading } = useAuth();
 
   const menu = [
     { name: "Chat", icon: MessageCircle, path: "/user/chat" },
@@ -131,7 +78,7 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="mt-auto p-4 border-t border-white/10">
 
-      {loading ? (
+      {isLoading ? (
 
           <div className="flex items-center gap-3 px-2 py-2 rounded-2xl">
 
@@ -164,24 +111,24 @@ export default function Sidebar() {
 
               <img
                   className="w-12 h-12 rounded-full ring-2 ring-blue-300 object-cover"
-                  src={`http://127.0.0.1:8000/storage/${mee?.avatar}`}
-                  alt={mee?.name}
+                  src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
+                  alt={user?.name}
               />
 
               <div className="hidden md:block flex-1 min-w-0">
 
                   <div className="font-medium text-sm truncate">
-                      {mee?.name}
+                      {user?.name}
                   </div>
 
                   <div className="text-xs text-white/60 truncate">
-                      {mee?.email}
+                      {user?.email}
                   </div>
 
               </div>
 
               <button
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="hidden md:block p-2 text-white/70 hover:text-white 
                   hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
                   title="Déconnexion"

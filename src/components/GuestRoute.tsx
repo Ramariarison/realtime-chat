@@ -1,20 +1,21 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+import { useAuth } from "../hooks/useAuth";
+
 export default function GuestRoute() {
 
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("user_role");
+  const { user } = useAuth();
 
-  // utilisateur déjà connecté
-  if (token) {
+  // Utilisateur déjà connecté
+  if (user) {
 
-    if (role === "admin") {
+    if (user.role === "admin") {
       return <Navigate to="/admin/users" replace />;
     }
 
     return <Navigate to="/user/chat" replace />;
   }
 
-  // utilisateur non connecté
+  // Utilisateur non connecté
   return <Outlet />;
 }
