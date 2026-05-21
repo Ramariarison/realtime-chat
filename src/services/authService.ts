@@ -23,3 +23,15 @@ export async function logoutUser(token: string) {
     token,
   });
 }
+
+export async function updateProfile(
+    data: FormData,
+    token: string
+) {
+
+    return await apiFetch("/user/update", {
+        method: "POST",
+        token,
+        body: data,
+    });
+}

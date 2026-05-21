@@ -14,12 +14,7 @@ export default function ProfileAdminPage() {
                 src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
             />
 
-            <ProfileContent
-                loading={isLoading}
-                Name={user?.name}
-                Email={user?.email}
-                src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
-            />
+            <ProfileContent/>
 
         </div>
     )
