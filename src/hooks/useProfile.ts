@@ -67,7 +67,8 @@ export function useProfile() {
 
         if(
             formData.name === user?.name &&
-            formData.email === user?.email
+            formData.email === user?.email &&
+            !avatar
         ) {
 
             alert("Aucune modification détectée");
@@ -88,8 +89,9 @@ export function useProfile() {
                 data.append("avatar", avatar);
             }
 
-            const response =
-                await updateProfile(data, token);
+            const response = await updateProfile(data, token);
+
+            setAvatar(null);
 
             setUser(response.user);
 
