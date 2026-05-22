@@ -18,6 +18,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errorResp, setErrorResp] = useState('');
+
   // Charger l'utilisateur depuis le localStorage au refresh
   useEffect(() => {
 
@@ -51,6 +53,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Mettre à jour le context
       setUser(response.user);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+
+      setErrorResp(error.message);
+
+      throw error;
+
     } finally {
 
       setIsLoading(false);
@@ -77,6 +86,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         logout,
         isLoading,
+        errorResp,
+        setErrorResp,
       }}
     >
       {children}
