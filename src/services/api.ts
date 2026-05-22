@@ -60,7 +60,7 @@ export async function apiFetch(
     }
 
     // Token expiré
-    if(response.status === 401) {
+    if(response.status === 401 && options.token) {
 
         localStorage.removeItem("token");
 
