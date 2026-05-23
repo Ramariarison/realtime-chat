@@ -14,6 +14,8 @@ export interface AuthContextType {
     login: (data: FormData) => Promise<void>;
     logout: () => void;
     isLoading: boolean;
+    errorResp: string;
+    setErrorResp: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(

@@ -15,7 +15,7 @@ export default function LoginForm({ switchToRegister }: Props) {
 
   const [showError, setShowError] = useState(false)
 
-  const { login, isLoading, user } = useAuth()
+  const { login, isLoading, user, errorResp, setErrorResp } = useAuth()
 
   const navigate = useNavigate()
 
@@ -41,6 +41,12 @@ export default function LoginForm({ switchToRegister }: Props) {
 
       setError('Please fill in the fields !');
 
+      setShowError(true);
+
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
+
       return;
     }
 
@@ -51,20 +57,23 @@ export default function LoginForm({ switchToRegister }: Props) {
     data.append('password', formData.password);
 
     try {
-      
-      login(data);
 
-      setFormData({
-        email: '',
-        password: ''
-      });
+      await login(data);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+    } catch {
 
-      setError(err.message);
+      setShowError(true);
+
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
-  }
+
+    setFormData({
+      email: '',
+      password: ''
+    });
+}
 
   useEffect(() => {
     if(user) {
@@ -76,6 +85,23 @@ export default function LoginForm({ switchToRegister }: Props) {
     }
   }, [user, navigate])
 
+  //
+
+  useEffect(() => {
+
+    if(error || errorResp) {
+
+      const timer = setTimeout(() => {
+
+        setShowError(false);
+
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+
+  }, [error, errorResp]);
+
   return (
     <>
       {/* Toast notification d'erreur */}
@@ -86,9 +112,12 @@ export default function LoginForm({ switchToRegister }: Props) {
           <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-sm font-medium">{error}</span>
+          <span className="text-sm font-medium">{error || errorResp}</span>
           <button 
-            onClick={() => setShowError(false)}
+            onClick={() => {
+              setShowError(false);
+              setErrorResp('');
+            }}
             className="ml-auto hover:bg-red-600 rounded-full p-1 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

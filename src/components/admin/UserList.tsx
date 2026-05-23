@@ -5,112 +5,27 @@ import {
     Filter,
     UserPlus,
     CheckCircle,
-    Inspect,
     Loader2,
     Check,
     X
 } from "lucide-react";
 
-import { useEffect, useState } from "react";
-import { destroy, getUsers, valideUser } from "../../services/userService";
+import { useUsersList } from "../../hooks/useUsersList";
 
 export default function UserList() {
 
-    type User = {
-        id: number;
-        avatar: string;
-        name: string;
-        email: string;
-        status: number
-    };
-
-    const [users, setUsers] = useState<User[]>([]);
-
-    const [message, setMessage] = useState('');
-
-    const [showMessage, setShowMessage] = useState(false);
-
-    const [loading, setLoading] = useState(true);
-
-    const token = localStorage.getItem("token");
-
-    // Fetch global
-    const fetchData = async () => {
-
-        setLoading(true);
-
-        try {
-
-            // Users
-            const usersResponse = await getUsers(token);
-            setUsers(usersResponse.data);
-
-        } catch (error) {
-
-            console.error(error);
-
-        } finally {
-
-            setLoading(false);
-        }
-    };
-
-    // Initial loading
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    // Validate user
-    const handleValideUser = async (userId: number) => {
-
-        try {
-
-            const response = await valideUser(userId, token);
-
-            if (response && response.message) {
-                setMessage(response.message);
-            }
-
-            setShowMessage(true);
-
-            setTimeout(() => {
-                setShowMessage(false);
-            }, 3000);
-
-            await fetchData();
-
-        } catch (error) {
-
-            console.error(error);
-        }
-    }
-
-    // Supprimer utilisateur
-    const handleDeleteUser = async (userId: number) => {
-
-        try {
-
-            const response = await destroy(userId, token);
-
-            if(response && response.message) {
-                setMessage(response.message);
-            }
-
-            setShowMessage(true);
-
-            setTimeout(() => {
-                setShowMessage(false);
-            }, 3000);
-
-            await fetchData();
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
-
-    }
+    const { 
+        message,
+        showMessage,
+        setShowMessage,
+        loading,
+        setSearch,
+        statusFilter,
+        setStatusFilter,
+        filteredUsers,
+        handleValideUser,
+        handleDeleteUser,
+     } = useUsersList();
 
     return (
 
@@ -166,6 +81,7 @@ export default function UserList() {
                             className="w-64 pl-9 pr-4 py-1.5 text-sm rounded-md border border-gray-300 
                             focus:outline-none focus:ring-1 focus:ring-blue-500
                             focus:border-blue-500 transition"
+                            onChange={(e) => setSearch(e.target.value)}
                         />
 
                     </div>
@@ -175,20 +91,31 @@ export default function UserList() {
                         bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
                     >
 
-                        <Filter className="w-4 h-4" />
+                        <Filter strokeWidth={3} className="w-4 h-4" />
 
+                        {/* 
                         <span className="hidden sm:inline">
                             Filter
                         </span>
+                        */}
+                        <select 
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="outline-none font-semibold"   
+                        >
+                            <option value="All">All</option>
+                            <option value="1">Validated</option>
+                            <option value="0">Pending</option>
+                        </select>
 
                     </button>
 
                     <button
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm
+                        className="flex font-semibold items-center gap-2 px-3 py-1.5 rounded-md text-sm
                         bg-blue-600 text-white hover:bg-blue-700 transition"
                     >
 
-                        <UserPlus className="w-4 h-4" />
+                        <UserPlus strokeWidth={3} className="w-4 h-4" />
 
                         <span className="hidden sm:inline">
                             Add
@@ -246,7 +173,7 @@ export default function UserList() {
 
                         <tbody>
 
-                            {users.map((user) => (
+                            {filteredUsers.map((user) => (
 
                                 <tr
                                     key={user.id}
@@ -295,12 +222,6 @@ export default function UserList() {
                                     <td className="p-2">
 
                                         <div className="flex gap-3 justify-center items-center">
-
-                                            <Inspect
-                                                size={16}
-                                                strokeWidth={3}
-                                                className="text-blue-400 cursor-pointer"
-                                            />
 
                                             {user.status === 1 && (
 
