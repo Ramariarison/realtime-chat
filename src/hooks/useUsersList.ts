@@ -3,7 +3,7 @@ import { destroy, getUsers, valideUser } from "../services/userService";
 
 export function useUsersList() {
 
-       type User = {
+    type User = {
         id: number;
         avatar: string;
         name: string;
@@ -22,6 +22,10 @@ export function useUsersList() {
     const [search, setSearch] = useState("");
 
     const [statusFilter, setStatusFilter] = useState("All");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [userSelected, setUserSelected] = useState<User | null>(null);
 
     const token = localStorage.getItem("token");
 
@@ -50,6 +54,16 @@ export function useUsersList() {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const handleOpenModal = (user: User) => {
+        setIsModalOpen(true);
+        setUserSelected(user);
+    }
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setUserSelected(null);
+    }
 
     const filteredUsers = users.filter((user) => {
 
@@ -124,5 +138,10 @@ export function useUsersList() {
         filteredUsers,
         handleValideUser,
         handleDeleteUser,
+        isModalOpen,
+        userSelected,
+        handleOpenModal,
+        handleCloseModal,
+        fetchData
     };
 }

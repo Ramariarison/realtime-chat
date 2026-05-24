@@ -39,3 +39,12 @@ export async function destroy(user: number, token: string) {
         token,
     });
 }
+
+export async function updateUser(user: number, data: FormData, token: string) {
+
+    return await apiFetch(`/admin/users/${user}/update-user`, {
+        method: "POST",
+        body: data,
+        token,
+    })
+}
