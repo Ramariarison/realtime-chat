@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { useUsersList } from "../../hooks/useUsersList";
+import UserModal from "../modal/UserModal";
 
 export default function UserList() {
 
@@ -25,11 +26,25 @@ export default function UserList() {
         filteredUsers,
         handleValideUser,
         handleDeleteUser,
+        isModalOpen,
+        userSelected,
+        handleOpenModal,
+        handleCloseModal,
+        fetchData
      } = useUsersList();
 
     return (
 
         <div className="flex flex-col h-screen overflow-hidden">
+
+            {/* Modal */}
+            {isModalOpen && userSelected && (
+                <UserModal
+                    user={userSelected}
+                    onClose={handleCloseModal}
+                    fetchData={fetchData}
+                />
+            )}
 
             {/* Toast notification de succés */}
             <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
@@ -226,6 +241,7 @@ export default function UserList() {
                                             {user.status === 1 && (
 
                                                 <Edit
+                                                    onClick={() => handleOpenModal(user)}
                                                     size={16}
                                                     strokeWidth={3}
                                                     className="text-emerald-400 cursor-pointer"
