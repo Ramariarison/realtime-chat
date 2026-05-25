@@ -25,6 +25,8 @@ export function useUsersList() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
     const [userSelected, setUserSelected] = useState<User | null>(null);
 
     const token = localStorage.getItem("token");
@@ -63,6 +65,14 @@ export function useUsersList() {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setUserSelected(null);
+    }
+
+    const handleOpenAddModal = () => {
+        setIsAddModalOpen(true);
+    }
+
+    const handleCloseAddModal = () => {
+        setIsAddModalOpen(false);
     }
 
     const filteredUsers = users.filter((user) => {
@@ -142,6 +152,9 @@ export function useUsersList() {
         userSelected,
         handleOpenModal,
         handleCloseModal,
-        fetchData
+        fetchData,
+        isAddModalOpen,
+        handleOpenAddModal,
+        handleCloseAddModal
     };
 }

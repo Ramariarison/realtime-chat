@@ -12,6 +12,7 @@ import {
 
 import { useUsersList } from "../../hooks/useUsersList";
 import UserModal from "../modal/UserModal";
+import AddUserModal from "../modal/AddUserModal";
 
 export default function UserList() {
 
@@ -30,7 +31,10 @@ export default function UserList() {
         userSelected,
         handleOpenModal,
         handleCloseModal,
-        fetchData
+        fetchData,
+        isAddModalOpen,
+        handleOpenAddModal,
+        handleCloseAddModal
      } = useUsersList();
 
     return (
@@ -42,6 +46,14 @@ export default function UserList() {
                 <UserModal
                     user={userSelected}
                     onClose={handleCloseModal}
+                    fetchData={fetchData}
+                />
+            )}
+
+            {/* Add user modal */}
+            {isAddModalOpen && (
+                <AddUserModal 
+                    onClose={handleCloseAddModal}
                     fetchData={fetchData}
                 />
             )}
@@ -126,6 +138,7 @@ export default function UserList() {
                     </button>
 
                     <button
+                        onClick={handleOpenAddModal}
                         className="flex font-semibold items-center gap-2 px-3 py-1.5 rounded-md text-sm
                         bg-blue-600 text-white hover:bg-blue-700 transition"
                     >

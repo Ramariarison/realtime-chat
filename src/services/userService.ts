@@ -48,3 +48,12 @@ export async function updateUser(user: number, data: FormData, token: string) {
         token,
     })
 }
+
+export async function addUser(data: FormData, token: string) {
+
+    return await apiFetch('/admin/users/add', {
+        method: "POST",
+        body: data,
+        token,
+    })
+}
