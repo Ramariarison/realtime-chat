@@ -1,4 +1,4 @@
-import { Camera, FileArchiveIcon, RefreshCw, X } from "lucide-react";
+import { Camera, FileArchiveIcon, PlusCircle, X } from "lucide-react";
 
 import { useAddModal } from "../../hooks/useAddModal";
 
@@ -133,13 +133,28 @@ export default function AddUserModal({ onClose, fetchData }: AddModalProps) {
                             />
                         </div>
 
+                        <div className="p-2 flex flex-col gap-2">
+
+                            <label className="ml-2 text-sm text-gray-600">Status</label>
+
+                            <select 
+                                name="status"
+                                onChange={handleInputChange}
+                                className="rounded-sm px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            >
+                                <option value="0">Pending</option>
+                                <option value="1">Validated</option>
+                            </select>
+
+                        </div>
+
                     </div>
 
                     {/* Bouton */}
                     <div className="p-2">
                         <button onClick={handleSubmit} className="mt-2 text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition cursor-pointer">
                             <div className="flex items-center gap-2">
-                                <RefreshCw height={14} width={14}/>
+                                <PlusCircle height={14} width={14}/>
                                 <span>Add User</span>
                             </div>
                         </button>

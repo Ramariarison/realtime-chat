@@ -9,18 +9,19 @@ export function useAddModal(fetchData: () => Promise<void>) {
         name: '',
         email:'',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        status: 0
     });
 
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> ) => {
 
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.name === "status" ? Number(e.target.value) : e.target.value
         })
 
     }
@@ -64,6 +65,7 @@ export function useAddModal(fetchData: () => Promise<void>) {
             data.append("name", formData.name);
             data.append("email", formData.email);
             data.append("password", formData.password);
+            data.append("status", formData.status.toString());
 
             if(avatarFile) {
                 data.append("avatar", avatarFile);

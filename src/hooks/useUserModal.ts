@@ -5,7 +5,8 @@ type User = {
     id: number,
     name: string,
     email: string,
-    avatar: string
+    avatar: string,
+    status: number
 }
 
 export function useUserModal(
@@ -25,16 +26,17 @@ export function useUserModal(
         id: user.id,
         name: user.name,
         email: user.email,
-        avatar: user.avatar
+        avatar: user.avatar,
+        status: user.status
     });
 
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> 
     ) => {
 
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.name === "status" ? Number(e.target.value) : e.target.value,
         });
     };
 
@@ -64,7 +66,8 @@ export function useUserModal(
         if(
             formData.name === user.name &&
             formData.email === user.email &&
-            !avatar
+            !avatar &&
+            formData.status === user.status
         ) {
 
             alert("Aucune modification détectée");
@@ -78,6 +81,7 @@ export function useUserModal(
 
             data.append("name", formData.name);
             data.append("email", formData.email);
+            data.append("status", formData.status.toString());
 
             // Avatar
             if(avatar) {
@@ -105,6 +109,6 @@ export function useUserModal(
         avatarPreview,
         handleInputChange,
         handleAvatarChange,
-        handleSubmit
+        handleSubmit,
     };
 }
