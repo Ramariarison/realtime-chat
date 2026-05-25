@@ -7,6 +7,7 @@ type User = {
     name: string,
     email: string,
     avatar: string,
+    status: number
 }
 
 type UserModalProps = {
@@ -110,6 +111,22 @@ export default function UserModal({ user, onClose, fetchData }: UserModalProps) 
                                 type="text" 
                                 className="block w-full rounded-md bg-gray-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
+                        </div>
+
+                        <div className="p-2 flex flex-col gap-2">
+
+                            <label className="ml-2 text-sm text-gray-600">Status</label>
+
+                            <select 
+                                name="status"
+                                value={formData.status}
+                                onChange={handleInputChange}
+                                className="rounded-sm px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            >
+                                <option value="0">Pending</option>
+                                <option value="1">Validated</option>
+                            </select>
+
                         </div>
 
                     </div>
