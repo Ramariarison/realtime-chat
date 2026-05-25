@@ -5,7 +5,7 @@ Frontend d’une application de chat en temps réel permettant aux utilisateurs 
 ## Technologies utilisées
 - React
 - Tailwind CSS
-- (ajoute ici ton backend si besoin : Laravel / Node.js / etc.)
+- Laravel
 
 ## Fonctionnalités
 - Authentification des utilisateurs
