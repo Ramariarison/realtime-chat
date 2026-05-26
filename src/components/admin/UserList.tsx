@@ -39,7 +39,7 @@ export default function UserList() {
 
     return (
 
-        <div className="flex flex-col h-screen overflow-hidden">
+        <div className="flex flex-col bg-gray-100 h-screen">
 
             {/* Modal */}
             {isModalOpen && userSelected && (
@@ -115,7 +115,7 @@ export default function UserList() {
 
                     <button
                         className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm
-                        bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                        bg-white text-gray-700 hover:bg-gray-200 transition"
                     >
 
                         <Filter strokeWidth={3} className="w-4 h-4" />
@@ -157,11 +157,11 @@ export default function UserList() {
 
             {/* Table */}
 
-            <div className="mt-4 mx-4 flex-1 overflow-y-auto">
+            <div className="flex-1 mt-4 mx-4 mb-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
 
                 {loading ? (
 
-                    <div className="flex justify-center items-center h-64">
+                    <div className="flex justify-center items-center flex-1">
 
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
 
@@ -169,128 +169,139 @@ export default function UserList() {
 
                 ) : (
 
-                    <table className="w-full">
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
 
-                        <thead className="sticky top-0 bg-white z-10">
+                        <table className="w-full border-collapse">
 
-                            <tr className="text-left border-b border-gray-300 text-gray-600 text-sm">
+                            <thead className="sticky top-0 z-20 bg-gray-50 backdrop-blur-sm">
 
-                                <th className="text-center p-4">
-                                    Profile
-                                </th>
+                                <tr className="border-b border-gray-200 text-gray-600 text-sm">
 
-                                <th className="text-center p-4">
-                                    Name
-                                </th>
+                                    <th className="text-center px-6 py-4 font-semibold">
+                                        Profile
+                                    </th>
 
-                                <th className="text-center p-4">
-                                    Email address
-                                </th>
+                                    <th className="text-center px-6 py-4 font-semibold">
+                                        Name
+                                    </th>
 
-                                <th className="text-center p-4">
-                                    Status
-                                </th>
+                                    <th className="text-center px-6 py-4 font-semibold">
+                                        Email address
+                                    </th>
 
-                                <th className="text-center p-4">
-                                    Actions
-                                </th>
+                                    <th className="text-center px-6 py-4 font-semibold">
+                                        Status
+                                    </th>
 
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            {filteredUsers.map((user) => (
-
-                                <tr
-                                    key={user.id}
-                                    className="border-b border-gray-200 text-gray-600 text-sm"
-                                >
-
-                                    <td className="p-3 align-middle">
-
-                                        <div className="flex justify-center items-center">
-
-                                            <img
-                                                className="w-10 h-10 rounded-full ring-2 ring-blue-300 object-cover"
-                                                src={`http://127.0.0.1:8000/storage/${user.avatar}`}
-                                                alt={user.name}
-                                            />
-
-                                        </div>
-
-                                    </td>
-
-                                    <td className="text-center p-4">
-                                        {user.name}
-                                    </td>
-
-                                    <td className="text-center p-4">
-                                        {user.email}
-                                    </td>
-
-                                    <td className="text-center align-middle">
-
-                                        <span
-                                            className={`font-semibold inline-block px-2 py-1 rounded-md text-xs
-                                            ${user.status === 1
-                                            ? "text-emerald-600 border-2 border-emerald-100 bg-green-50"
-                                            : "text-amber-600 border-2 border-amber-100 bg-amber-50"}`}
-                                        >
-
-                                            {user.status === 1
-                                                ? "Validated"
-                                                : "Pending"}
-
-                                        </span>
-
-                                    </td>
-
-                                    <td className="p-2">
-
-                                        <div className="flex gap-3 justify-center items-center">
-
-                                            {user.status === 1 && (
-
-                                                <Edit
-                                                    onClick={() => handleOpenModal(user)}
-                                                    size={16}
-                                                    strokeWidth={3}
-                                                    className="text-emerald-400 cursor-pointer"
-                                                />
-
-                                            )}
-
-                                            {user.status === 0 && (
-
-                                                <CheckCircle
-                                                    size={16}
-                                                    strokeWidth={3}
-                                                    className="text-emerald-400 cursor-pointer"
-                                                    onClick={() => handleValideUser(user.id)}
-                                                />
-
-                                            )}
-
-                                            <Trash
-                                                size={16}
-                                                strokeWidth={3}
-                                                className="text-red-400 cursor-pointer"
-                                                onClick={() => handleDeleteUser(user.id)}
-                                            />
-
-                                        </div>
-
-                                    </td>
+                                    <th className="text-center px-6 py-4 font-semibold">
+                                        Actions
+                                    </th>
 
                                 </tr>
 
-                            ))}
+                            </thead>
 
-                        </tbody>
+                            <tbody>
 
-                    </table>
+                                {filteredUsers.map((user) => (
+
+                                    <tr
+                                        key={user.id}
+                                        className="border-b border-gray-100 text-sm text-gray-600 hover:bg-blue-50/40 transition-all duration-200"
+                                    >
+
+                                        <td className="py-3">
+
+                                            <div className="flex justify-center items-center">
+
+                                                <img
+                                                    className="w-11 h-11 rounded-full object-cover ring-2 ring-white shadow-md"
+                                                    src={`http://127.0.0.1:8000/storage/${user.avatar}`}
+                                                    alt={user.name}
+                                                />
+
+                                            </div>
+
+                                        </td>
+
+                                        <td className="text-center px-6 py-4 font-medium">
+                                            {user.name}
+                                        </td>
+
+                                        <td className="text-center px-6 py-4 text-gray-500">
+                                            {user.email}
+                                        </td>
+
+                                        <td className="text-center px-6 py-4">
+
+                                            <span
+                                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold
+                                                ${user.status === 1
+                                                ? "bg-emerald-50 text-emerald-600"
+                                                : "bg-amber-50 text-amber-600"}`}
+                                            >
+
+                                                <div
+                                                    className={`w-2 h-2 rounded-full
+                                                    ${user.status === 1
+                                                    ? "bg-emerald-500"
+                                                    : "bg-amber-500"}`}
+                                                />
+
+                                                {user.status === 1
+                                                    ? "Validated"
+                                                    : "Pending"}
+
+                                            </span>
+
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            <div className="flex justify-center items-center gap-4">
+
+                                                {user.status === 1 && (
+
+                                                    <Edit
+                                                        onClick={() => handleOpenModal(user)}
+                                                        size={17}
+                                                        strokeWidth={2.5}
+                                                        className="text-emerald-500 cursor-pointer hover:scale-125 hover:text-emerald-600 transition-all duration-200"
+                                                    />
+
+                                                )}
+
+                                                {user.status === 0 && (
+
+                                                    <CheckCircle
+                                                        size={17}
+                                                        strokeWidth={2.5}
+                                                        className="text-emerald-500 cursor-pointer hover:scale-125 hover:text-emerald-600 transition-all duration-200"
+                                                        onClick={() => handleValideUser(user.id)}
+                                                    />
+
+                                                )}
+
+                                                <Trash
+                                                    size={17}
+                                                    strokeWidth={2.5}
+                                                    className="text-red-400 cursor-pointer hover:scale-125 hover:text-red-500 transition-all duration-200"
+                                                    onClick={() => handleDeleteUser(user.id)}
+                                                />
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
 
                 )}
 
