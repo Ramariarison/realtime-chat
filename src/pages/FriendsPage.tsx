@@ -8,6 +8,8 @@ export default function FriendsPage() {
 
     const [activeTab, setActiveTab] = useState('friends');
 
+    const token = localStorage.getItem("token");
+
     return (
         <div>
             <Header
@@ -19,7 +21,7 @@ export default function FriendsPage() {
 
             { activeTab === 'requests' && <RequestSection /> }
 
-            { activeTab === 'find' && <InviteSection /> }
+            { activeTab === 'find' && <InviteSection token={token} /> }
             
         </div>
     )
