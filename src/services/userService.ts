@@ -57,3 +57,26 @@ export async function addUser(data: FormData, token: string) {
         token,
     })
 }
+
+export async function searchUsers(query: string, token: string) {
+    return await apiFetch(
+        `/users/search?query=${encodeURIComponent(query)}`,
+        {
+            method: "GET",
+            token,
+        }
+    );
+}
+
+export async function sendFriendInvitation(
+    userId: number,
+    token: string
+) {
+    return await apiFetch(
+        `/friends/invite/${userId}`,
+        {
+            method: "POST",
+            token,
+        }
+    );
+}
