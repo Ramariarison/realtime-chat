@@ -7,7 +7,7 @@ export default function AdminLayout() {
         
         <Sidebar />
 
-        <div className="flex-1">
+        <div className="flex-1 min-h-screen">
             <Outlet />
         </div>
 

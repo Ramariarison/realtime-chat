@@ -16,7 +16,7 @@ export default function Sidebar() {
 
   const menu = [
     { name: "Chat", icon: MessageCircle, path: "/user/chat" },
-    { name: "Friends", icon: Users, path: "/user/settings" },
+    { name: "Friends", icon: Users, path: "/user/friends" },
     { name: "Profile informations", icon: User, path: "/user/profile" },
   ];
 
