@@ -12,6 +12,7 @@ import ProtectedRoute from "../components/ProtectedRoute"
 import GuestRoute from "../components/GuestRoute"
 import ProfileAdminPage from "../pages/ProfileAdminPage"
 import Dashboard from "../pages/Dashboard"
+import FriendsPage from "../pages/FriendsPage"
 
 export default function AppRouter() {
   return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
           <Route element={<MainLayout />}>
             <Route path="/user/chat" element={<ChatPage />} />
             <Route path="/user/profile" element={<ProfileUserpage />} />
+            <Route path="/user/friends" element={<FriendsPage />} />
           </Route>
         </Route>
 
