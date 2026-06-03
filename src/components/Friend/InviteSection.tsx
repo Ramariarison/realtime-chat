@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { searchUsers, sendFriendInvitation } from "../../services/userService";
+import { searchUsers, sendFriendInvitation } from "../../services/friendService";
 
 interface SearchUser {
     id: number;
