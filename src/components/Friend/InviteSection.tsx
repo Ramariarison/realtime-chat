@@ -144,65 +144,55 @@ export default function InviteSection({
                             </div>
 
                             {/* Informations */}
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-baseline justify-between">
+                            <div className="flex-1 flex items-center justify-between">
+                                <div className="min-w-0">
                                     <div className="font-semibold text-sm text-gray-900 truncate">
                                         {user.name}
                                     </div>
 
-                                    <div className="ml-2">
-                                        {user.friendship_status ===
-                                            "none" && (
-                                            <button
-                                                onClick={() =>
-                                                    handleInvite(
-                                                        user.id
-                                                    )
-                                                }
-                                                className="px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-2xl text-xs"
-                                            >
-                                                Add Friend
-                                            </button>
-                                        )}
+                                    <div className="text-xs text-gray-500 truncate">
+                                        {user.email}
+                                    </div>
 
-                                        {user.friendship_status ===
-                                            "pending" && (
-                                            <button
-                                                disabled
-                                                className="px-3 py-2 bg-yellow-500 text-white rounded-2xl text-xs cursor-not-allowed"
-                                            >
-                                                Pending
-                                            </button>
-                                        )}
+                                    <div className="text-xs font-semibold text-gray-600 truncate">
+                                        {user.friendship_status === "friend" &&
+                                            "Already friends"}
 
-                                        {user.friendship_status ===
-                                            "friend" && (
-                                            <button
-                                                disabled
-                                                className="px-3 py-2 bg-green-500 text-white rounded-2xl text-xs cursor-not-allowed"
-                                            >
-                                                Friend
-                                            </button>
-                                        )}
+                                        {user.friendship_status === "pending" &&
+                                            "Invitation pending"}
+
+                                        {user.friendship_status === "none" &&
+                                            "Not connected"}
                                     </div>
                                 </div>
 
-                                <div className="text-xs text-gray-500 truncate">
-                                    {user.email}
-                                </div>
+                                <div className="ml-4 shrink-0">
+                                    {user.friendship_status === "none" && (
+                                        <button
+                                            onClick={() => handleInvite(user.id)}
+                                            className="px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-2xl text-xs cursor-pointer"
+                                        >
+                                            Add Friend
+                                        </button>
+                                    )}
 
-                                <div className="text-xs font-semibold text-gray-600 truncate">
-                                    {user.friendship_status ===
-                                        "friend" &&
-                                        "Already friends"}
+                                    {user.friendship_status === "pending" && (
+                                        <button
+                                            disabled
+                                            className="px-3 py-2 bg-yellow-500 text-white rounded-2xl text-xs cursor-not-allowed"
+                                        >
+                                            Pending
+                                        </button>
+                                    )}
 
-                                    {user.friendship_status ===
-                                        "pending" &&
-                                        "Invitation pending"}
-
-                                    {user.friendship_status ===
-                                        "none" &&
-                                        "Not connected"}
+                                    {user.friendship_status === "friend" && (
+                                        <button
+                                            disabled
+                                            className="px-3 py-2 bg-green-500 text-white rounded-2xl text-xs cursor-not-allowed"
+                                        >
+                                            Friend
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

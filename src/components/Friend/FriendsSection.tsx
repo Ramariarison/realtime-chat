@@ -23,6 +23,7 @@ export default function FriendsSection({ token }) {
 
     useEffect(() => {
         loadFriends();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadFriends = async () => {
@@ -70,7 +71,7 @@ export default function FriendsSection({ token }) {
                 {filteredFriends.map((friend) => (
                     <div
                         key={friend.id}
-                        className="flex items-center gap-3 px-4 py-3.5 bg-gray-50 cursor-pointer transition-all duration-200 border-l-4 border-gray-200"
+                        className="flex items-center gap-3 px-4 py-3.5 bg-gray-50 transition-all duration-200 border-l-4 border-purple-300"
                     >
                         <div className="relative shrink-0">
                             <img
@@ -83,25 +84,20 @@ export default function FriendsSection({ token }) {
                             <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
                         </div>
 
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-baseline justify-between">
-
+                        <div className="flex-1 flex items-center justify-between">
+                            <div>
                                 <div className="font-semibold text-sm text-gray-900 truncate">
                                     {friend.name}
                                 </div>
 
-                                <div className="text-xs text-gray-500 whitespace-nowrap ml-2">
-                                    <button className="px-3 py-2 bg-purple-400 text-white rounded-2xl">
-                                        Message
-                                    </button>
+                                <div className="text-xs font-semibold text-gray-600 truncate">
+                                    {friend.email}
                                 </div>
-
                             </div>
 
-                            <div className="text-xs font-semibold text-gray-600 truncate">
-                                {friend.email}
-                            </div>
-
+                            <button className="px-3 py-2 bg-purple-400 text-white text-xs font-semibold rounded-2xl cursor-pointer">
+                                message
+                            </button>
                         </div>
                     </div>
                 ))}
