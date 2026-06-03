@@ -19,7 +19,7 @@ export default function FriendsPage() {
 
             { activeTab === 'friends' && <FriendsSection /> }
 
-            { activeTab === 'requests' && <RequestSection /> }
+            { activeTab === 'requests' && <RequestSection token={token} /> }
 
             { activeTab === 'find' && <InviteSection token={token} /> }
             
