@@ -2,6 +2,8 @@ import { Clock10Icon } from "lucide-react"
 
 import { acceptFriendRequest, declineFriendRequest, getFriendRequests } from "../../services/friendService";
 
+import Loading from "../ui/Loading";
+
 import { useEffect, useState } from "react";
 
 interface FriendRequest {
@@ -17,6 +19,8 @@ export default function RequestSection({ token }) {
 
     const [requests, setRequests] = useState<FriendRequest[]>([]);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         console.log("useEffect exécuté");
 
@@ -26,7 +30,7 @@ export default function RequestSection({ token }) {
 
     const loadRequests = async () => {
         try {
-            console.log("Loading requests...");
+            setLoading(true);
 
             const response = await getFriendRequests(token);
 
@@ -35,6 +39,8 @@ export default function RequestSection({ token }) {
             setRequests(response.data ?? response);
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -83,6 +89,9 @@ export default function RequestSection({ token }) {
             <div className="p-4">
                 <h2 className="text-sm text-purple-500 font-semibold">Friend requests</h2>
             </div>
+
+            {/* Chargement */}
+            { loading && <Loading /> }
 
             <div className="mx-4 grid grid-cols-2 gap-2">
                 {requests.map((request) => (

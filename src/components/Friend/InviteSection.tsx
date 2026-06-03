@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { searchUsers, sendFriendInvitation } from "../../services/friendService";
+import Loading from "../ui/Loading";
 
 interface SearchUser {
     id: number;
@@ -109,11 +110,7 @@ export default function InviteSection({
                 </div>
 
                 {/* Loading */}
-                {loading && (
-                    <div className="mt-4 text-center text-sm text-gray-500">
-                        Searching...
-                    </div>
-                )}
+                {loading && <Loading />}
 
                 {/* Résultats */}
                 <div className="mt-4 space-y-2 max-h-120 overflow-y-auto pr-2">
