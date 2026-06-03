@@ -17,7 +17,7 @@ export default function FriendsPage() {
                 setActive={setActiveTab}
             />
 
-            { activeTab === 'friends' && <FriendsSection /> }
+            { activeTab === 'friends' && <FriendsSection token={token} /> }
 
             { activeTab === 'requests' && <RequestSection token={token} /> }
 

@@ -1,4 +1,4 @@
-import { ClockArrowUp } from "lucide-react"
+import { Clock10Icon } from "lucide-react"
 
 import { acceptFriendRequest, declineFriendRequest, getFriendRequests } from "../../services/friendService";
 
@@ -100,13 +100,19 @@ export default function RequestSection({ token }) {
                                     />
                                 </div>
 
-                                <span className="font-semibold text-white text-sm">
-                                    {request.name}
-                                </span>
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-semibold text-white text-sm">
+                                        {request.name}
+                                    </span>
+
+                                    <div className="text-xs font-semibold text-gray-500 truncate">
+                                        {request.email}
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="text-white">
-                                <ClockArrowUp />
+                                <Clock10Icon />
                             </div>
                         </div>
 

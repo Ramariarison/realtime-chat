@@ -55,3 +55,10 @@ export async function declineFriendRequest(
         }
     );
 }
+
+export async function getFriends(token: string) {
+    return await apiFetch("/friends", {
+        method: "GET",
+        token,
+    });
+}
