@@ -1,114 +1,363 @@
 import { Paperclip, Send } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+import {
+    getMessages,
+    sendMessage,
+} from "../../services/ConversationService";
+
+import type {
+    Message,
+    Conversation,
+} from "../../types/types";
+
+import { useAuth } from "../../hooks/useAuth";
 
 interface ChatWindowProps {
-  conversationId: number;
+    conversation: Conversation | null;
+    token: string;
 }
 
-export default function ChatWindow({ conversationId }: ChatWindowProps) {
+export default function ChatWindow({
+    conversation,
+    token,
+}: ChatWindowProps) {
 
-  // Simulation des données de la conversation (à remplacer plus tard par une vraie requête API)
-  // On utilise conversationId pour simuler le chargement de la bonne conversation
-  const currentConversation = {
-    id: conversationId,
-    name: conversationId === 1 ? "Nomena Fitiavana" : 
-          conversationId === 2 ? "Alice Marielle" :
-          conversationId === 3 ? "John Rakoto" : "Sophie Razafy",
-    avatar: `https://i.pravatar.cc/48?u=${conversationId}`,
-    isOnline: conversationId === 1 || conversationId === 3,
-  };
+    const { user } = useAuth();
 
-  const messages = [
-    { id: 1, text: "Salut Comment vas-tu ?", isSent: false, time: "14:25" },
-    { id: 2, text: "Très bien et toi ?", isSent: true, time: "14:26" },
-    { id: 3, text: "Ça avance sur le projet ?", isSent: false, time: "14:28" },
-    { id: 4, text: "Oui, je suis dessus en ce moment", isSent: true, time: "14:29" },
-  ];
+    const [messages, setMessages] =
+        useState<Message[]>([]);
 
-  return (
-    <div className="flex-1 flex flex-col h-full">
-      {/* Header du chat window */}
-      <div className="p-4 bg-white flex items-center gap-3">
-        <img
-          src={currentConversation.avatar}
-          alt={currentConversation.name}
-          className="w-12 h-12 rounded-full object-cover"
-        />
-        <div>
-          <div className="font-semibold text-sm">{currentConversation.name}</div>
-          <div className="flex items-center gap-1 text-xs text-green-500">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            {currentConversation.isOnline ? "en ligne" : "hors ligne"}
-          </div>
-        </div>
-      </div>
+    const [content, setContent] =
+        useState("");
 
-      <div 
-        className="flex-1 flex flex-col overflow-y-auto bg-fixed"
-        style={{
-          backgroundImage: "url('/images/Pochita.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        {/* Messages */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.isSent ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[70%] px-4 py-3 rounded-3xl text-sm shadow-sm ${
-                  msg.isSent
-                    ? "bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white rounded-br-none"
-                    : "bg-white text-gray-800 rounded-bl-none"
-                }`}
-              >
-                {msg.text}
-                <div
-                  className={`text-[10px] mt-1 opacity-70 ${
-                    msg.isSent ? "text-blue-100" : "text-gray-500"
-                  }`}
-                >
-                  {msg.time}
+    const [loading, setLoading] =
+        useState(false);
+
+    const messagesEndRef =
+        useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+
+        if (conversation) {
+            loadMessages();
+        }
+
+    }, [conversation]);
+
+    useEffect(() => {
+
+        messagesEndRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+
+    }, [messages]);
+
+    const loadMessages = async () => {
+
+        if (!conversation) return;
+
+        try {
+
+            setLoading(true);
+
+            const response =
+                await getMessages(
+                    conversation.id,
+                    token
+                );
+
+            setMessages(response);
+
+        } catch (error) {
+
+            console.error(error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+    };
+
+    const handleSend = async () => {
+
+        if (!conversation || !content.trim()) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await sendMessage(
+                    conversation.id,
+                    content,
+                    token
+                );
+
+            setMessages((prev) => [
+                ...prev,
+                response,
+            ]);
+
+            setContent("");
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    };
+
+    if (!conversation) {
+        return null;
+    }
+
+    return (
+        <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
+
+            {/* Header */}
+            <div className="bg-white px-6 py-4">
+
+                <div className="flex items-center gap-3">
+
+                    <div className="relative">
+
+                        <img
+                            src={`http://localhost:8000/storage/${conversation.avatar}`}
+                            alt={conversation.name}
+                            className="w-12 h-12 rounded-full object-cover"
+                        />
+
+                        <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
+
+                    </div>
+
+                    <div>
+
+                        <h2 className="font-semibold text-gray-900">
+                            {conversation.name}
+                        </h2>
+
+                        <p className="text-xs font-medium text-green-600">
+                            Online
+                        </p>
+
+                    </div>
+
                 </div>
-              </div>
+
             </div>
-          ))}
-        </div>
 
-        {/* Zone de saisie */}
-        <div className="flex items-center rounded-r-full px-3 py-1.25 shadow-sm m-4 bg-black/20 backdrop-blur-sm">
-          <input
-            type="text"
-            placeholder="Write a message here"
-            className="flex-1 bg-transparent text-white placeholder-white/70 outline-none pr-10"
-          />
-
-          <div className="flex items-center gap-3">
-            <button className="text-white/70 hover:text-white">
-              <Paperclip size={20} />
-            </button>
-
-            <button 
-              className="group flex items-center justify-center w-11 h-11 
-                        bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 
-                        hover:from-violet-500 hover:via-purple-500 hover:to-indigo-500
-                        active:scale-95 transition-all duration-200 
-                        rounded-full shadow-lg shadow-purple-500/30
-                        hover:shadow-xl hover:shadow-purple-500/40
-                        focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 
-                        focus:ring-offset-zinc-950"
+            {/* Messages */}
+            <div
+                className="
+                    flex-1
+                    overflow-y-auto
+                    px-6
+                    py-5
+                    pb-32
+                    space-y-4
+                "
+                style={{
+                    backgroundImage:
+                        "url('/images/Pochita.png')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
             >
-              <Send 
-                size={20} 
-                className="text-white transition-transform group-active:rotate-45" 
-              />
-            </button>
-          </div>
+
+                {loading ? (
+
+                    <div className="text-center text-white font-medium">
+                        Loading messages...
+                    </div>
+
+                ) : (
+
+                    messages.map((msg) => {
+
+                        const isMine =
+                            msg.user_id === user?.id;
+
+                        return (
+
+                            <div
+                                key={msg.id}
+                                className={`flex ${
+                                    isMine
+                                        ? "justify-end"
+                                        : "justify-start"
+                                }`}
+                            >
+
+                                <div
+                                    className={`
+                                        max-w-[75%]
+                                        px-4
+                                        py-3
+                                        rounded-3xl
+                                        shadow-md
+                                        break-words
+                                        ${
+                                            isMine
+                                                ? `
+                                                    bg-gradient-to-br
+                                                    from-indigo-700
+                                                    via-purple-700
+                                                    to-violet-800
+                                                    text-white
+                                                    rounded-br-none
+                                                  `
+                                                : `
+                                                    bg-white
+                                                    text-gray-800
+                                                    rounded-bl-none
+                                                  `
+                                        }
+                                    `}
+                                >
+
+                                    <div className="text-sm">
+                                        {msg.content}
+                                    </div>
+
+                                    <div
+                                        className={`
+                                            text-[10px]
+                                            mt-2
+                                            text-right
+                                            ${
+                                                isMine
+                                                    ? "text-purple-100"
+                                                    : "text-gray-500"
+                                            }
+                                        `}
+                                    >
+                                        {new Date(
+                                            msg.created_at
+                                        ).toLocaleTimeString(
+                                            [],
+                                            {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            }
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        );
+
+                    })
+
+                )}
+
+                <div ref={messagesEndRef} />
+
+            </div>
+
+            {/* Input flottant */}
+            <div
+                className="
+                    absolute
+                    bottom-5
+                    left-6
+                    right-6
+                    z-20
+                "
+            >
+
+                <div
+                    className="
+                        flex
+                        items-center
+                        gap-3
+                        px-4
+                        py-2
+                        rounded-3xl
+                        border
+                        border-white/20
+                        bg-black/30
+                        backdrop-blur-xl
+                        shadow-2xl
+                    "
+                >
+
+                    <button
+                        className="
+                            text-white/70
+                            hover:text-white
+                            transition-colors
+                        "
+                    >
+                        <Paperclip size={20} />
+                    </button>
+
+                    <input
+                        type="text"
+                        value={content}
+                        onChange={(e) =>
+                            setContent(
+                                e.target.value
+                            )
+                        }
+                        onKeyDown={(e) => {
+
+                            if (
+                                e.key === "Enter"
+                            ) {
+                                handleSend();
+                            }
+
+                        }}
+                        placeholder="Write a message..."
+                        className="
+                            flex-1
+                            bg-transparent
+                            text-white
+                            placeholder-white/60
+                            outline-none
+                        "
+                    />
+
+                    <button
+                        onClick={handleSend}
+                        disabled={!content.trim()}
+                        className="
+                            flex
+                            items-center
+                            justify-center
+                            w-12
+                            h-12
+                            rounded-full
+                            bg-gradient-to-br
+                            from-violet-600
+                            via-purple-600
+                            to-indigo-600
+                            hover:scale-105
+                            transition-all
+                            duration-200
+                            disabled:opacity-50
+                            disabled:cursor-not-allowed
+                            shadow-lg
+                            shadow-purple-500/40
+                        "
+                    >
+
+                        <Send
+                            size={18}
+                            className="text-white"
+                        />
+
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
-      </div>
-    </div>
-  );
+    );
 }

@@ -3,6 +3,7 @@ import { getFriends } from "../../services/friendService";
 import { useEffect, useState } from "react";
 import Loading from "../ui/Loading";
 import EmptyState from "../ui/EmptyState";
+import { startConversation } from "../../services/ConversationService";
 
 interface Friend {
     id: number;
@@ -37,6 +38,23 @@ export default function FriendsSection({ token }) {
             console.error(error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleMessage = async (userId: number) => {
+        try {
+
+            const conversation =
+                await startConversation(
+                    userId,
+                    token
+                );
+
+            window.location.href =
+                `/chat?conversation=${conversation.id}`;
+
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -106,8 +124,11 @@ export default function FriendsSection({ token }) {
                                             </div>
                                         </div>
 
-                                        <button className="px-3 py-2 bg-purple-400 text-white text-xs font-semibold rounded-2xl cursor-pointer">
-                                            message
+                                        <button
+                                            onClick={() => handleMessage(friend.id)}
+                                            className="px-3 py-2 bg-purple-400 text-white text-xs font-semibold rounded-2xl cursor-pointer"
+                                        >
+                                            Message
                                         </button>
                                     </div>
                                 </div>
