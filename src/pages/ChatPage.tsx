@@ -31,7 +31,7 @@ export default function ChatPage() {
 
                 ) : (
 
-                    <div className="flex-1 flex items-center justify-center text-gray-400">
+                    <div className="flex-1 flex items-center justify-center bg-gray-50 text-gray-400">
 
                         <div className="text-center">
 

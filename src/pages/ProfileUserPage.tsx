@@ -3,24 +3,21 @@ import ProfileContent from "../components/profile/ProfileContent";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Profilepage() {
+  const { user, isLoading } = useAuth();
 
-    const { user, isLoading } = useAuth();
+  return (
+    <div className="flex h-full">
+      <LeftSide
+        loading={isLoading}
+        src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
+      />
 
-    return (
-        <div className="flex h-full">
-
-            <LeftSide 
-                loading={isLoading}
-                src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
-            />
-
-            <ProfileContent
-                loading={isLoading}
-                Name={user?.name}
-                Email={user?.email}
-                src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
-            />
-
-        </div>
-    )
+      <ProfileContent
+        loading={isLoading}
+        Name={user?.name}
+        Email={user?.email}
+        src={`http://127.0.0.1:8000/storage/${user?.avatar}`}
+      />
+    </div>
+  );
 }
