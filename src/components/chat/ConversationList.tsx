@@ -70,7 +70,7 @@ export default function ConversationList({
             <div className="flex-1 overflow-y-auto">
                 {loading ? (
                     <div className="flex items-center justify-center h-64">
-                        Chargement...
+                        Loading...
                     </div>
                 ) : filteredConversations.length > 0 ? (
                     filteredConversations.map((conv) => (
